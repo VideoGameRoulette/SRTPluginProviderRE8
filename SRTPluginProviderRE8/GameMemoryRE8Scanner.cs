@@ -18,7 +18,7 @@ namespace SRTPluginProviderRE8
         //private int EnemyTableCount;
 
         // Pointer Address Variables
-        //private int pointerGameInit;
+        private int pointerGameInit;
         private int pointerGameStates;
         private int pointerCutsceneStates;
         private int pointerDukeStates;
@@ -35,7 +35,7 @@ namespace SRTPluginProviderRE8
 
         // Pointer Classes
         private IntPtr BaseAddress { get; set; }
-        //private MultilevelPointer PointerGameInit { get; set; }
+        private MultilevelPointer PointerGameInit { get; set; }
         private MultilevelPointer PointerGameStates { get; set; }
         private MultilevelPointer PointerCutsceneStates { get; set; }
         private MultilevelPointer PointerDukeStates { get; set; }
@@ -51,7 +51,6 @@ namespace SRTPluginProviderRE8
         private MultilevelPointer PointerTargetChapter { get; set; }
 
         // Enemy Pointers
-        private MultilevelPointer PointerEnemyCount { get; set; }
         private MultilevelPointer[] PointerEnemyEntries { get; set; }
 
 
@@ -77,7 +76,7 @@ namespace SRTPluginProviderRE8
                 BaseAddress = NativeWrappers.GetProcessBaseAddress(pid, PInvoke.ListModules.LIST_MODULES_64BIT); // Bypass .NET's managed solution for getting this and attempt to get this info ourselves via PInvoke since some users are getting 299 PARTIAL COPY when they seemingly shouldn't.
 
                 // Setup the pointers.
-                //PointerGameInit = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerGameInit));
+                PointerGameInit = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerGameInit));
                 PointerGameStates = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerGameStates));
                 PointerCutsceneStates = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerCutsceneStates));
                 PointerDukeStates = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerDukeStates), 0xE0L, 0x70L, 0x70L, 0x18L, 0x20L);
@@ -102,7 +101,7 @@ namespace SRTPluginProviderRE8
             {
                 case GameVersion.RE8_WW_20210506_1:
                     {
-                        //pointerGameInit = 0x0A1A4690;
+                        pointerGameInit = 0x0A1A4690;
                         pointerGameStates = 0x0A19E058;
                         pointerCutsceneStates = 0x0A1B1BA8;
                         pointerDukeStates = 0x0A1BB228;
@@ -117,7 +116,7 @@ namespace SRTPluginProviderRE8
                     }
                 case GameVersion.RE8_CEROD_20210506_1:
                     {
-                        //pointerGameInit = 0x0A1A4690 + 0x2000;
+                        pointerGameInit = 0x0A1A4690 + 0x2000;
                         pointerGameStates = 0x0A19E058 + 0x2000;
                         pointerCutsceneStates = 0x0A1B1BA8 + 0x2000;
                         pointerDukeStates = 0x0A1BB228 + 0x2000;
@@ -132,7 +131,7 @@ namespace SRTPluginProviderRE8
                     }
                 case GameVersion.RE8_PROMO_01_20210426_1:
                     {
-                        //pointerGameInit = 0x0A1A4690 + 0x1030;
+                        pointerGameInit = 0x0A1A4690 + 0x1030;
                         pointerGameStates = 0x0A19E058 + 0x1030;
                         pointerCutsceneStates = 0x0A1B1BA8 + 0x1030;
                         pointerDukeStates = 0x0A1BB228 + 0x1030;
@@ -169,7 +168,7 @@ namespace SRTPluginProviderRE8
         /// </summary>
         internal void UpdatePointers()
         {
-            //PointerGameInit.UpdatePointers();
+            PointerGameInit.UpdatePointers();
             PointerGameStates.UpdatePointers();
             PointerCutsceneStates.UpdatePointers();
             PointerDukeStates.UpdatePointers();
@@ -178,7 +177,6 @@ namespace SRTPluginProviderRE8
             PointerPlayerPosition.UpdatePointers();
             PointerDA.UpdatePointers();
             PointerLei.UpdatePointers();
-            PointerEnemyCount.UpdatePointers();
             PointerCurrentView.UpdatePointers();
             PointerCurrentChapter.UpdatePointers();
             PointerTargetChapter.UpdatePointers();
@@ -198,8 +196,8 @@ namespace SRTPluginProviderRE8
             }
 
             //Game States
-            //fixed (byte* p = &gameMemoryValues._gameInit)
-            //    success = PointerGameInit.TryDerefByte(0x8, p);
+            fixed (byte* p = &gameMemoryValues._gameInit)
+                success = PointerGameInit.TryDerefByte(0x8, p);
 
             fixed (byte* p = &gameMemoryValues._pauseState)
                 success = PointerGameStates.TryDerefByte(0x48, p);
@@ -245,13 +243,13 @@ namespace SRTPluginProviderRE8
             int size2 = PointerCurrentChapter.DerefInt(0x10);
             int size3 = PointerTargetChapter.DerefInt(0x10);
             
-            byte[] view = PointerCurrentView.DerefByteArray(0x14, size1);
+            byte[] view = PointerCurrentView.DerefByteArray(0x14, size1 * 2);
             gameMemoryValues._currentview = Encoding.Unicode.GetString(view);
             
-            byte[] current = PointerCurrentChapter.DerefByteArray(0x14, size2);
+            byte[] current = PointerCurrentChapter.DerefByteArray(0x14, size2 * 2);
             gameMemoryValues._currentchapter = Encoding.Unicode.GetString(current);
             
-            byte[] target = PointerTargetChapter.DerefByteArray(0x14, size3);
+            byte[] target = PointerTargetChapter.DerefByteArray(0x14, size3 * 2);
             gameMemoryValues._targetchapter = Encoding.Unicode.GetString(target);
 
             // Enemy HP
