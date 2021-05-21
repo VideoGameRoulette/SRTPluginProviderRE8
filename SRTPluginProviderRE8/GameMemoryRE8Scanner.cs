@@ -312,8 +312,8 @@ namespace SRTPluginProviderRE8
             if (SafeReadByteArray(PointerDA.Address, sizeof(GameRank), out byte[] gameRankBytes))
             {
                 var gameRank = GameRank.AsStruct(gameRankBytes);
-                gameMemoryValues._rankScore = gameRank.Rank;
-                gameMemoryValues._rank = gameRank.Score;
+                gameMemoryValues._rankScore = gameRank.Score;
+                gameMemoryValues._rank = gameRank.Rank;
             }
 
             // Lei
