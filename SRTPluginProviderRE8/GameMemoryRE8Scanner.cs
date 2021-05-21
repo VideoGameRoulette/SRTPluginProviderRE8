@@ -113,7 +113,7 @@ namespace SRTPluginProviderRE8
                 PointerInventoryCount = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressItemCount), 0x88L);
                 PointerInventoryEntryList = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressItems), 0x78L, 0x70L);
 
-                GenerateItemEntires();
+                GenerateItemEntries();
             }
         }
 
@@ -206,7 +206,7 @@ namespace SRTPluginProviderRE8
                 PointerEnemyEntries[i] = new MultilevelPointer(memoryAccess, IntPtr.Add(entityPtrArr[i], 0x228), 0x18L, 0x48L, 0x48L);
             }
         }
-        private unsafe void GenerateItemEntires()
+        private unsafe void GenerateItemEntries()
         {
             bool success;
             fixed (int* p = &InventoryTableCount)
@@ -216,10 +216,10 @@ namespace SRTPluginProviderRE8
 
             // Skip the first 28 bytes and read the rest as a byte array
             // This can be done because the pointers are stored sequentially in an array
-            byte[] inventoryEntriesPtrByteArr = PointerInventoryEntryList.DerefByteArray(0x20, MAX_ENTITIES * sizeof(IntPtr));
+            byte[] inventoryEntriesPtrByteArr = PointerInventoryEntryList.DerefByteArray(0x20, MAX_ITEMS * sizeof(IntPtr));
 
             // Do a block copy to convert the byte array to an IntPtr array
-            IntPtr[] inventoryEntriesPtrArr = new IntPtr[MAX_ENTITIES];
+            IntPtr[] inventoryEntriesPtrArr = new IntPtr[MAX_ITEMS];
             Buffer.BlockCopy(inventoryEntriesPtrByteArr, 0, inventoryEntriesPtrArr, 0, inventoryEntriesPtrByteArr.Length);
 
             for (int i = 0; i < PointerInventoryEntries.Length; ++i)
@@ -253,7 +253,7 @@ namespace SRTPluginProviderRE8
 
             PointerInventoryCount.UpdatePointers();
             PointerInventoryEntryList.UpdatePointers();
-            GenerateItemEntires();
+            GenerateItemEntries();
         }
 
         internal unsafe IGameMemoryRE8 Refresh()
