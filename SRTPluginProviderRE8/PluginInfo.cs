@@ -11,7 +11,7 @@ namespace SRTPluginProviderRE8
 
         public string Author => "Squirrelies & VideoGameRoulette";
 
-        public Uri MoreInfoURL => new Uri("https://github.com/Squirrelies/SRTPluginProviderRE8");
+        public Uri MoreInfoURL => new Uri("https://github.com/VideoGameRoulette/SRTPluginProviderRE8");
 
         public int VersionMajor => assemblyFileVersion.ProductMajorPart;
 

@@ -10,6 +10,7 @@ namespace SRTPluginProviderRE8
         byte DukeState { get; set; }
 
         uint GameState { get; set; }
+        uint CutsceneTimer { get; set; }
         uint CutsceneState { get; set; }
         uint CutsceneID { get; set; }
 
@@ -28,6 +29,8 @@ namespace SRTPluginProviderRE8
         string TargetChapter { get; set; }
 
         EnemyHP[] EnemyHealth { get; set; }
+
+        InventoryEntry LastKeyItem { get; set; }
 
     }
 }

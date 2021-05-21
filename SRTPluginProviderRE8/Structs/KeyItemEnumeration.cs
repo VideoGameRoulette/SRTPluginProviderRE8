@@ -2,7 +2,6 @@
 {
     public enum KeyItemEnumeration : uint
     {
-        None = 0,
         FlowerSwordsBall = 0x0D0580E4,
         LadysLipstick = 0x14F35091,
         EthansHand = 0xB57A83B5,

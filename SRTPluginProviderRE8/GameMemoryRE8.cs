@@ -18,6 +18,8 @@ namespace SRTPluginProviderRE8
 
         public uint GameState { get => _gameState; set => _gameState = value; }
         public uint _gameState;
+        public uint CutsceneTimer { get => _cutsceneTimer; set => _cutsceneTimer = value; }
+        internal uint _cutsceneTimer;
 
         public uint CutsceneState { get => _cutsceneState; set => _cutsceneState = value; }
         internal uint _cutsceneState;
@@ -58,5 +60,11 @@ namespace SRTPluginProviderRE8
 
         public EnemyHP[] EnemyHealth { get => _enemyHealth; set => _enemyHealth = value; }
         internal EnemyHP[] _enemyHealth;
+
+        public InventoryEntry LastKeyItem { get => _lastKeyItem; set => _lastKeyItem = value; }
+        internal InventoryEntry _lastKeyItem;
+
+        public InventoryEntry[] PlayerInventory { get => _playerInventory; set => _playerInventory = value; }
+        internal InventoryEntry[] _playerInventory;
     }
 }

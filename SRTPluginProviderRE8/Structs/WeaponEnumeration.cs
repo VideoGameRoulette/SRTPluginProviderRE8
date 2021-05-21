@@ -2,7 +2,6 @@
 {
     public enum WeaponEnumeration : uint
     {
-        None = 0,
         LEMI = 0x05CA8405,
         M1911 = 0xA308B2BA,
         M1851Wolfsbane = 0x13BCCD36,

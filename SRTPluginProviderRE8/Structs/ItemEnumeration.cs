@@ -2,7 +2,6 @@
 {
     public enum ItemEnumeration : uint
     {
-        None = 0,
         FirstAidMed = 0x553456B2,
         MedInjector = 0x3819A7D0,
         Lockpick = 0x97EF67DC,

@@ -2,7 +2,6 @@
 {
     public enum TreasureEnumeration : uint
     {
-        None = 0,
         CrystalSkull = 0xC9B0FFBA,
         CrystalFragment = 0x73DACEBA,
         CrystalTorso = 0x7BE6E19A,
@@ -35,8 +34,6 @@
         IngridsNecklace = 0x5B117567,
         AzureEye = 0xEAB00A65,
         AzureRing = 0x86E3EAAE,
-        MapFactory = 0x8A47B9B5,
-        TreasureMap = 0x827C64E8,
         CrimsonSkull = 0x8911BDA3,
         MadalinaBody = 0x8B3428C7,
         WellWheel = 0x3B7A59E7,
@@ -62,5 +59,6 @@
         FatherNicholasAngel = 0x4AFAC16B,
         PhotoOfAPhantomFish = 0xB14B2289,
         GoldenLadyStatue = 0xC7831A0B,
+        TeddyBear = 0xA13F3011,
     }
 }
