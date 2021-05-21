@@ -2,13 +2,18 @@
 using static ProcessMemory.Extensions;
 using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using SRTPluginProviderRE8.Structs;
 using System.Text;
+using SRTPluginProviderRE8.Structs.GameStructs;
 
 namespace SRTPluginProviderRE8
 {
     internal class GameMemoryRE8Scanner : IDisposable
     {
+        private static readonly int MAX_ENTITIES = 64;
+        private static readonly int MAX_ITEMS = 256;
+
         // Variables
         private ProcessMemoryHandler memoryAccess;
         private GameMemoryRE8 gameMemoryValues;
@@ -57,9 +62,11 @@ namespace SRTPluginProviderRE8
 
         // Enemy Pointers
         private MultilevelPointer PointerEnemyCount { get; set; }
+        private MultilevelPointer PointerEnemyEntryList { get; set; }
         private MultilevelPointer[] PointerEnemyEntries { get; set; }
 
         private MultilevelPointer PointerInventoryCount { get; set; }
+        private MultilevelPointer PointerInventoryEntryList { get; set; }
         private MultilevelPointer[] PointerInventoryEntries { get; set; }
         internal GameMemoryRE8Scanner(Process process = null)
         {
@@ -96,14 +103,17 @@ namespace SRTPluginProviderRE8
                 PointerCurrentView = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerChapter), 0x58L);
                 PointerCurrentChapter = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerChapter), 0x60L);
                 PointerTargetChapter = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerChapter), 0x68L);
+                PointerEnemyEntryList = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressEnemies), 0x58L, 0x10L);
 
                 //Enemies
                 PointerEnemyCount = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressEnemies), 0x58L, 0x10L);
                 GenerateEnemyEntries();
 
-                //Enemies
+                //Items
                 PointerInventoryCount = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressItemCount), 0x88L);
-                GenerateItemEntires();
+                PointerInventoryEntryList = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressItems), 0x78L, 0x70L);
+
+                GenerateItemEntries();
             }
         }
 
@@ -180,31 +190,43 @@ namespace SRTPluginProviderRE8
             fixed (int* p = &EnemyTableCount)
                 success = PointerEnemyCount.TryDerefInt(0x1C, p);
 
-            if (PointerEnemyEntries == null) // Enter if the pointer table is null (first run) or the size does not match.
+            PointerEnemyEntries = new MultilevelPointer[MAX_ENTITIES]; // Create a new enemy pointer table array with the detected size.
+
+            // Skip the first 28 bytes and read the rest as a byte array
+            // This can be done because the pointers are stored sequentially in an array
+            byte[] entityPtrByteArr = PointerEnemyEntryList.DerefByteArray(0x28, MAX_ENTITIES * sizeof(IntPtr));
+
+            // Do a block copy to convert the byte array to an IntPtr array
+            IntPtr[] entityPtrArr = new IntPtr[MAX_ENTITIES];
+            Buffer.BlockCopy(entityPtrByteArr, 0, entityPtrArr, 0, entityPtrByteArr.Length);
+
+            // The pointers we read are already the address of the entity, so make sure we add the first offset here
+            for (int i = 0; i < PointerEnemyEntries.Length; ++i) // Loop through and create all of the pointers for the table.
             {
-                PointerEnemyEntries = new MultilevelPointer[64]; // Create a new enemy pointer table array with the detected size.
-                for (int i = 0; i < PointerEnemyEntries.Length; ++i) // Loop through and create all of the pointers for the table.
-                {
-                    PointerEnemyEntries[i] = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressEnemies), 0x58L, 0x10L, (i * 0x8) + 0x28L, 0x228, 0x18L, 0x48L, 0x48L);
-                }
+                PointerEnemyEntries[i] = new MultilevelPointer(memoryAccess, IntPtr.Add(entityPtrArr[i], 0x228), 0x18L, 0x48L, 0x48L);
             }
         }
-
-        private unsafe void GenerateItemEntires()
+        private unsafe void GenerateItemEntries()
         {
             bool success;
             fixed (int* p = &InventoryTableCount)
                 success = PointerInventoryCount.TryDerefInt(0x2C, p);
 
-            //Console.WriteLine(string.Format("Items: {0}", InventoryTableCount));
-            if (PointerInventoryEntries == null) // Enter if the pointer table is null (first run) or the size does not match.
+            PointerInventoryEntries = new MultilevelPointer[MAX_ITEMS];
+
+            // Skip the first 28 bytes and read the rest as a byte array
+            // This can be done because the pointers are stored sequentially in an array
+            byte[] inventoryEntriesPtrByteArr = PointerInventoryEntryList.DerefByteArray(0x20, MAX_ITEMS * sizeof(IntPtr));
+
+            // Do a block copy to convert the byte array to an IntPtr array
+            IntPtr[] inventoryEntriesPtrArr = new IntPtr[MAX_ITEMS];
+            Buffer.BlockCopy(inventoryEntriesPtrByteArr, 0, inventoryEntriesPtrArr, 0, inventoryEntriesPtrByteArr.Length);
+
+            for (int i = 0; i < PointerInventoryEntries.Length; ++i)
             {
-                PointerInventoryEntries = new MultilevelPointer[256];
-                for (int i = 0; i < PointerInventoryEntries.Length; ++i)
-                {
-                    PointerInventoryEntries[i] = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressItems), 0x78L, 0x70L, (i * 0x8) + 0x20L, 0x58L);
-                }
+                PointerInventoryEntries[i] = new MultilevelPointer(memoryAccess, IntPtr.Add(inventoryEntriesPtrArr[i], 0x58));
             }
+
         }
         /// <summary>
         /// 
@@ -225,17 +247,13 @@ namespace SRTPluginProviderRE8
             PointerCurrentChapter.UpdatePointers();
             PointerTargetChapter.UpdatePointers();
             PointerEnemyCount.UpdatePointers();
-            GenerateEnemyEntries(); // This has to be here for the next part.
-            for (int i = 0; i < PointerEnemyEntries.Length; ++i)
-            {
-                PointerEnemyEntries[i].UpdatePointers();
-            }
+            PointerEnemyEntryList.UpdatePointers();
+
+            GenerateEnemyEntries();
+
             PointerInventoryCount.UpdatePointers();
-            GenerateItemEntires();
-            for (int i = 0; i < PointerInventoryEntries.Length; ++i)
-            {
-                PointerInventoryEntries[i].UpdatePointers();
-            }
+            PointerInventoryEntryList.UpdatePointers();
+            GenerateItemEntries();
         }
 
         internal unsafe IGameMemoryRE8 Refresh()
@@ -245,24 +263,25 @@ namespace SRTPluginProviderRE8
             // Init Bosses On First Scan
             if (gameMemoryValues.EnemyHealth == null && gameMemoryValues.PlayerInventory == null)
             {
-                gameMemoryValues.EnemyHealth = new EnemyHP[64];
+                gameMemoryValues.EnemyHealth = new EnemyHP[MAX_ENTITIES];
                 gameMemoryValues.LastKeyItem = new InventoryEntry();
-                gameMemoryValues.PlayerInventory = new InventoryEntry[256];
+                gameMemoryValues.PlayerInventory = new InventoryEntry[MAX_ITEMS];
             }
 
             //Game States
             fixed (byte* p = &gameMemoryValues._gameInit)
                 success = PointerGameInit.TryDerefByte(0x8, p);
 
-            fixed (byte* p = &gameMemoryValues._pauseState)
-                success = PointerGameStates.TryDerefByte(0x48, p);
-
-            fixed (uint* p = &gameMemoryValues._gameState)
-                success = PointerGameStates.TryDerefUInt(0x40, p);
+            if (PointerGameStates.Address != IntPtr.Zero)
+            {
+                byte[] gameStateBytes = memoryAccess.GetByteArrayAt(PointerGameStates.Address, sizeof(GameStates));
+                var gameStates = GameStates.AsStruct(gameStateBytes);
+                gameMemoryValues._pauseState = gameStates.PauseState;
+                gameMemoryValues._gameState = gameStates.GameState;
+            }
 
             fixed (uint* p = &gameMemoryValues._cutsceneTimer)
                 success = PointerCutsceneTimer.TryDerefUInt(0x94, p);
-
             fixed (uint* p = &gameMemoryValues._cutsceneState)
                 success = PointerCutsceneStates.TryDerefUInt(0xFD4, p);
 
@@ -273,24 +292,29 @@ namespace SRTPluginProviderRE8
                 success = PointerDukeStates.TryDerefByte(0x114, p);
 
             // Player HP
-            fixed (float* p = &gameMemoryValues._playerMaxHealth)
-                success = PointerPlayerHP.TryDerefFloat(0x10, p);
-            fixed (float* p = &gameMemoryValues._playerCurrentHealth)
-                success = PointerPlayerHP.TryDerefFloat(0x14, p);
+            if (SafeReadByteArray(PointerPlayerHP.Address, sizeof(GamePlayerHP), out byte[] gamePlayerHpBytes))
+            {
+                var playerHp = GamePlayerHP.AsStruct(gamePlayerHpBytes);
+                gameMemoryValues._playerMaxHealth = playerHp.Max;
+                gameMemoryValues._playerCurrentHealth = playerHp.Current;
+            }
 
             // Player Position
-            fixed (float* p = &gameMemoryValues._playerPositionX)
-                success = PointerPlayerPosition.TryDerefFloat(0x180, p);
-            fixed (float* p = &gameMemoryValues._playerPositionY)
-                success = PointerPlayerPosition.TryDerefFloat(0x184, p);
-            fixed (float* p = &gameMemoryValues._playerPositionZ)
-                success = PointerPlayerPosition.TryDerefFloat(0x188, p);
+            if (SafeReadByteArray(PointerPlayerPosition.Address, sizeof(GamePlayerPosition), out byte[] gamePlayerPosBytes))
+            {
+                var playerPosition = GamePlayerPosition.AsStruct(gamePlayerPosBytes);
+                gameMemoryValues._playerPositionX = playerPosition.X;
+                gameMemoryValues._playerPositionY = playerPosition.Y;
+                gameMemoryValues._playerPositionZ = playerPosition.Z;
+            }
 
             // DA
-            fixed (int* p = &gameMemoryValues._rankScore)
-                success = PointerDA.TryDerefInt(0x70, p);
-            fixed (int* p = &gameMemoryValues._rank)
-                success = PointerDA.TryDerefInt(0x74, p);
+            if (SafeReadByteArray(PointerDA.Address, sizeof(GameRank), out byte[] gameRankBytes))
+            {
+                var gameRank = GameRank.AsStruct(gameRankBytes);
+                gameMemoryValues._rankScore = gameRank.Rank;
+                gameMemoryValues._rank = gameRank.Score;
+            }
 
             // Lei
             fixed (int* p = &gameMemoryValues._lei)
@@ -317,10 +341,9 @@ namespace SRTPluginProviderRE8
             }
 
             // Enemy HP
-            GenerateEnemyEntries();
             if (gameMemoryValues._enemyHealth == null)
             {
-                gameMemoryValues._enemyHealth = new EnemyHP[64];
+                gameMemoryValues._enemyHealth = new EnemyHP[MAX_ENTITIES];
                 for (int i = 0; i < gameMemoryValues._enemyHealth.Length; ++i)
                     gameMemoryValues._enemyHealth[i] = new EnemyHP();
             }
@@ -329,12 +352,13 @@ namespace SRTPluginProviderRE8
                 try
                 {
                     // Check to see if the pointer is currently valid. It can become invalid when rooms are changed.
-                    if (PointerEnemyEntries[i].Address != IntPtr.Zero && i < EnemyTableCount)
+                    if (PointerEnemyEntries[i].Address != IntPtr.Zero && i < EnemyTableCount && SafeReadByteArray(PointerEnemyEntries[i].Address, sizeof(GamePlayerHP), out byte[] enemyHpBytes))
                     {
-                        fixed (float* p = &gameMemoryValues.EnemyHealth[i]._maximumHP)
-                            success = PointerEnemyEntries[i].TryDerefFloat(0x10, p);
-                        fixed (float* p = &gameMemoryValues.EnemyHealth[i]._currentHP)
-                            success = PointerEnemyEntries[i].TryDerefFloat(0x14, p);
+                        // Note, this is using the same structure as the player HP.
+                        // This may not always be the case, but the structures match for now.
+                        var enemyHp = GamePlayerHP.AsStruct(enemyHpBytes);
+                        gameMemoryValues.EnemyHealth[i]._maximumHP = enemyHp.Max;
+                        gameMemoryValues.EnemyHealth[i]._currentHP = enemyHp.Current;
                     }
                     else
                     {
@@ -356,10 +380,9 @@ namespace SRTPluginProviderRE8
                 success = PointerInventoryEntries[0].TryDerefUInt(0x3C, p);
 
             // Inventory
-            GenerateItemEntires();
             if (gameMemoryValues._playerInventory == null)
             {
-                gameMemoryValues._playerInventory = new InventoryEntry[256];
+                gameMemoryValues._playerInventory = new InventoryEntry[MAX_ITEMS];
                 for (int i = 0; i < gameMemoryValues._playerInventory.Length; ++i)
                     gameMemoryValues._playerInventory[i] = new InventoryEntry();
             }
@@ -368,40 +391,35 @@ namespace SRTPluginProviderRE8
                 try
                 {
                     // Check to see if the pointer is currently valid. It can become invalid when rooms are changed.
-                    if (PointerInventoryEntries[i].Address != IntPtr.Zero && i < InventoryTableCount)
+                    if (PointerInventoryEntries[i].Address != IntPtr.Zero && i < InventoryTableCount && SafeReadByteArray(PointerInventoryEntries[i].Address, sizeof(GameInventoryItem), out byte[] inventoryItemBytes))
                     {
-                        fixed (uint* p = &gameMemoryValues.PlayerInventory[i]._itemid)
-                            success = PointerInventoryEntries[i].TryDerefUInt(0x3C, p);
+                        var inventoryItem = GameInventoryItem.AsStruct(inventoryItemBytes);
+
+
+                        // This hook is a little poorly done... but good enough for now
+                        gameMemoryValues.PlayerInventory[i]._itemid = inventoryItem.ItemId;
+
                         if (gameMemoryValues.PlayerInventory[i].IsItem)
                         {
                             gameMemoryValues.PlayerInventory[i]._hasAttachment = 0;
-                            fixed (uint* p = &gameMemoryValues.PlayerInventory[i]._slotPosition)
-                                success = PointerInventoryEntries[i].TryDerefUInt(0x44, p);
-                            fixed (int* p = &gameMemoryValues.PlayerInventory[i]._quantity)
-                                success = PointerInventoryEntries[i].TryDerefInt(0x4C, p);
-                            fixed (byte* p = &gameMemoryValues.PlayerInventory[i]._ishorizontal)
-                                success = PointerInventoryEntries[i].TryDerefByte(0x50, p);
+                            gameMemoryValues.PlayerInventory[i]._slotPosition = inventoryItem.SlotPosition;
+                            gameMemoryValues.PlayerInventory[i]._quantity = inventoryItem.Quantity;
+                            gameMemoryValues.PlayerInventory[i]._ishorizontal = inventoryItem.IsHorizontal;
                             gameMemoryValues.PlayerInventory[i]._ammo = -1;
                         }
                         else if (gameMemoryValues.PlayerInventory[i].IsWeapon)
                         {
-                            fixed (byte* p = &gameMemoryValues.PlayerInventory[i]._hasAttachment)
-                                success = PointerInventoryEntries[i].TryDerefByte(0x3B, p);
-                            fixed (uint* p = &gameMemoryValues.PlayerInventory[i]._slotPosition)
-                                success = PointerInventoryEntries[i].TryDerefUInt(0x44, p);
-                            fixed (int* p = &gameMemoryValues.PlayerInventory[i]._quantity)
-                                success = PointerInventoryEntries[i].TryDerefInt(0x4C, p);
-                            fixed (byte* p = &gameMemoryValues.PlayerInventory[i]._ishorizontal)
-                                success = PointerInventoryEntries[i].TryDerefByte(0x50, p);
-                            fixed (int* p = &gameMemoryValues.PlayerInventory[i]._ammo)
-                                success = PointerInventoryEntries[i].TryDerefInt(0x58, p);
+                            gameMemoryValues.PlayerInventory[i]._hasAttachment = inventoryItem.HasAttachment;
+                            gameMemoryValues.PlayerInventory[i]._slotPosition = inventoryItem.SlotPosition;
+                            gameMemoryValues.PlayerInventory[i]._quantity = inventoryItem.Quantity;
+                            gameMemoryValues.PlayerInventory[i]._ishorizontal = inventoryItem.IsHorizontal;
+                            gameMemoryValues.PlayerInventory[i]._ammo = inventoryItem.Ammo;
                         }
                         else if (gameMemoryValues.PlayerInventory[i].IsKeyItem || gameMemoryValues.PlayerInventory[i].IsCraftable || gameMemoryValues.PlayerInventory[i].IsTreasure)
                         {
                             gameMemoryValues.PlayerInventory[i]._hasAttachment = 0;
                             gameMemoryValues.PlayerInventory[i]._slotPosition = 255;
-                            fixed (int* p = &gameMemoryValues.PlayerInventory[i]._quantity)
-                                success = PointerInventoryEntries[i].TryDerefInt(0x4C, p);
+                            gameMemoryValues.PlayerInventory[i]._quantity = inventoryItem.Quantity;
                             gameMemoryValues.PlayerInventory[i]._ishorizontal = 0;
                             gameMemoryValues.PlayerInventory[i]._ammo = -1;
                         }
@@ -454,6 +472,16 @@ namespace SRTPluginProviderRE8
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
+
+
+        private unsafe bool SafeReadByteArray(IntPtr address, int size, out byte[] readBytes)
+        {
+            readBytes = new byte[size];
+            fixed (byte* p = readBytes)
+            {
+                return memoryAccess.TryGetByteArrayAt(address, size, p);
+            }
+        }
 
         protected virtual void Dispose(bool disposing)
         {
