@@ -95,7 +95,6 @@ namespace SRTPluginProviderRE8
                 BaseAddress = NativeWrappers.GetProcessBaseAddress(pid, PInvoke.ListModules.LIST_MODULES_64BIT); // Bypass .NET's managed solution for getting this and attempt to get this info ourselves via PInvoke since some users are getting 299 PARTIAL COPY when they seemingly shouldn't.
 
                 // Setup the pointers.
-                PointerPlayerStatus = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerPlayerStatus), 0x3B0L, 0xD8L, 0x58L);
                 PointerGameInit = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerGameInit));
                 PointerGameStates = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerGameStates));
                 PointerCutsceneTimer = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerCutsceneTimer), 0x80L);
@@ -103,6 +102,7 @@ namespace SRTPluginProviderRE8
                 PointerDukeStates = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerDukeStates), 0xE0L, 0x70L, 0x70L, 0x18L, 0x20L);
                 PointerCutsceneID = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerCutsceneID), 0xE0L);
                 PointerPlayerHP = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressHP), 0x58L, 0x18L, 0x18L, 0x78L, 0x68L, 0x48L);
+                PointerPlayerStatus = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressHP), 0x58L, 0x1D8L);
                 PointerPlayerPosition = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerPlayerPosition), 0x180L, 0x50L);
                 PointerDA = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerDA));
                 PointerLei = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerLei), 0x60);
@@ -130,8 +130,6 @@ namespace SRTPluginProviderRE8
             {
                 case GameVersion.RE8_WW_20210506_1:
                     {
-                        pointerPlayerStatus = 0x0A3041F8;
-                        pointerGameInit = 0x0A1A4690;
                         pointerGameStates = 0x0A19E058;
                         pointerCutsceneTimer = 0x0A187430;
                         pointerCutsceneStates = 0x0A1B1BA8;
@@ -150,7 +148,6 @@ namespace SRTPluginProviderRE8
                     }
                 case GameVersion.RE8_CEROD_20210506_1:
                     {
-                        pointerPlayerStatus = 0x0A3041F8 + 0x2000;
                         pointerGameInit = 0x0A1A4690 + 0x2000;
                         pointerGameStates = 0x0A19E058 + 0x2000;
                         pointerCutsceneTimer = 0x0A187430 + 0x2000;
@@ -170,7 +167,6 @@ namespace SRTPluginProviderRE8
                     }
                 case GameVersion.RE8_CEROZ_20210508_1:
                     {
-                        pointerPlayerStatus = 0x0A3041F8 + 0x1000;
                         pointerGameInit = 0x0A1A4690 + 0x1000;
                         pointerGameStates = 0x0A19E058 + 0x1000;
                         pointerCutsceneTimer = 0x0A187430 + 0x1000;
@@ -190,7 +186,6 @@ namespace SRTPluginProviderRE8
                     }
                 case GameVersion.RE8_PROMO_01_20210426_1:
                     {
-                        pointerPlayerStatus = 0x0A3041F8 + 0x1030;
                         pointerGameInit = 0x0A1A4690 + 0x1030;
                         pointerGameStates = 0x0A19E058 + 0x1030;
                         pointerCutsceneTimer = 0x0A187430 + 0x1030;
@@ -330,7 +325,10 @@ namespace SRTPluginProviderRE8
             if (SafeReadByteArray(PointerPlayerStatus.Address, sizeof(GamePlayerStatus), out byte[] gamePlayerStatus))
             {
                 var playerStatus = GamePlayerStatus.AsStruct(gamePlayerStatus);
-                gameMemoryValues._playerstatus = playerStatus;
+                if (gameMemoryValues.PlayerStatus == null) {
+                    gameMemoryValues.PlayerStatus = new PlayerStatus();
+                }
+                gameMemoryValues._playerstatus.Update(playerStatus);
             }
 
             // Player HP

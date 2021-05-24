@@ -6,7 +6,7 @@ namespace SRTPluginProviderRE8
 {
     public interface IGameMemoryRE8
     {
-        GamePlayerStatus PlayerStatus { get; set; }
+        PlayerStatus PlayerStatus { get; set; }
         byte GameInit { get; set; }
         byte PauseState { get; set; }
         byte DukeState { get; set; }

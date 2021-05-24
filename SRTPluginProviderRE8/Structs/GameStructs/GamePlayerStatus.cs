@@ -24,12 +24,10 @@ namespace SRTPluginProviderRE8.Structs.GameStructs
         [FieldOffset(0x87)] public bool IsHideShelf;
         [FieldOffset(0x88)] public bool IsHollow;
         [FieldOffset(0x89)] public bool IsDisableUpperRotate;
-
         [FieldOffset(0x90)] public long BaseAcionID;
         [FieldOffset(0x98)] public long UpperActionID;
         [FieldOffset(0xA0)] public long LArmUpperActionID;
         [FieldOffset(0xA8)] public long EventActionID;
-
         [FieldOffset(0xB0)] public bool IsMeleeAction;
         [FieldOffset(0xB1)] public bool IsChrisPunch;
         [FieldOffset(0xB2)] public bool IsGunAttack;
@@ -56,9 +54,7 @@ namespace SRTPluginProviderRE8.Structs.GameStructs
         [FieldOffset(0xC7)] public bool IsDisableUseMine;
         [FieldOffset(0xC8)] public bool IsFixedAimMode;
         [FieldOffset(0xC9)] public bool IsEnableUseLaserIrradiation;
-
         [FieldOffset(0xD0)] public long PlayerReference;
-
         [FieldOffset(0xD8)] public bool IsInWaterAreaCam;
         [FieldOffset(0xD9)] public bool IsNoReduceBullet;
         [FieldOffset(0xDA)] public bool IsLoadingNumDouble;

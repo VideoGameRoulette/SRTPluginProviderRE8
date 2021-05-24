@@ -8,8 +8,8 @@ namespace SRTPluginProviderRE8
 {
     public class GameMemoryRE8 : IGameMemoryRE8
     {
-        public GamePlayerStatus PlayerStatus { get => _playerstatus; set => _playerstatus = value; }
-        internal GamePlayerStatus _playerstatus;
+        public PlayerStatus PlayerStatus { get => _playerstatus; set => _playerstatus = value; }
+        internal PlayerStatus _playerstatus;
 
         public byte GameInit { get => _gameInit; set => _gameInit = value; }
         internal byte _gameInit;
