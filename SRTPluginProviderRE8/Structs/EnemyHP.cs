@@ -1,7 +1,13 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 
 namespace SRTPluginProviderRE8.Structs
 {
+    public class Boss
+    {
+        public static float[] HitPoints = { 2900, 3400, 3700, 9000, 25000, 26000, 30000, 100000 };
+    }
+
     [DebuggerDisplay("{_DebuggerDisplay,nq}")]
     public struct EnemyHP
     {
@@ -24,7 +30,8 @@ namespace SRTPluginProviderRE8.Structs
                 return "DEAD / DEAD (0%)";
             }
         }
-
+        
+        public bool IsBoss => Boss.HitPoints.Contains(_maximumHP);
         public float MaximumHP { get => _maximumHP; }
         internal float _maximumHP;
         public float CurrentHP { get => _currentHP; }

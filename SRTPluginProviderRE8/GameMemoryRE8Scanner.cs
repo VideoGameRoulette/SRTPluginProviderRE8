@@ -35,7 +35,10 @@ namespace SRTPluginProviderRE8
         private int pointerDA;
         private int pointerLei;
 
+        private int pointerPlayerStatus;
+
         private int pointerChapter;
+        private int pointerRoom;
 
         private int pointerAddressEnemies;
 
@@ -44,6 +47,7 @@ namespace SRTPluginProviderRE8
 
         // Pointer Classes
         private IntPtr BaseAddress { get; set; }
+        private MultilevelPointer PointerPlayerStatus { get; set; }
         private MultilevelPointer PointerGameInit { get; set; }
         private MultilevelPointer PointerGameStates { get; set; }
         private MultilevelPointer PointerCutsceneTimer { get; set; }
@@ -59,6 +63,7 @@ namespace SRTPluginProviderRE8
         private MultilevelPointer PointerCurrentView { get; set; }
         private MultilevelPointer PointerCurrentChapter { get; set; }
         private MultilevelPointer PointerTargetChapter { get; set; }
+        private MultilevelPointer PointerCurrentRoom { get; set; }
 
         // Enemy Pointers
         private MultilevelPointer PointerEnemyCount { get; set; }
@@ -90,6 +95,7 @@ namespace SRTPluginProviderRE8
                 BaseAddress = NativeWrappers.GetProcessBaseAddress(pid, PInvoke.ListModules.LIST_MODULES_64BIT); // Bypass .NET's managed solution for getting this and attempt to get this info ourselves via PInvoke since some users are getting 299 PARTIAL COPY when they seemingly shouldn't.
 
                 // Setup the pointers.
+                PointerPlayerStatus = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerPlayerStatus), 0x3B0L, 0xD8L, 0x58L);
                 PointerGameInit = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerGameInit));
                 PointerGameStates = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerGameStates));
                 PointerCutsceneTimer = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerCutsceneTimer), 0x80L);
@@ -103,6 +109,7 @@ namespace SRTPluginProviderRE8
                 PointerCurrentView = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerChapter), 0x58L);
                 PointerCurrentChapter = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerChapter), 0x60L);
                 PointerTargetChapter = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerChapter), 0x68L);
+                PointerCurrentRoom = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerRoom), 0x90L);
                 PointerEnemyEntryList = new MultilevelPointer(memoryAccess, IntPtr.Add(BaseAddress, pointerAddressEnemies), 0x58L, 0x10L);
 
                 //Enemies
@@ -123,6 +130,7 @@ namespace SRTPluginProviderRE8
             {
                 case GameVersion.RE8_WW_20210506_1:
                     {
+                        pointerPlayerStatus = 0x0A3041F8;
                         pointerGameInit = 0x0A1A4690;
                         pointerGameStates = 0x0A19E058;
                         pointerCutsceneTimer = 0x0A187430;
@@ -135,12 +143,14 @@ namespace SRTPluginProviderRE8
                         pointerLei = 0x0A1B1C70;
                         pointerAddressEnemies = 0x0A1B1D00;
                         pointerChapter = 0x0A1B1DE8;
+                        pointerRoom = 0x0A1B1B70;
                         pointerAddressItemCount = 0x0A1B1C70;
                         pointerAddressItems = 0x0A1A5880;
                         return true;
                     }
                 case GameVersion.RE8_CEROD_20210506_1:
                     {
+                        pointerPlayerStatus = 0x0A3041F8 + 0x2000;
                         pointerGameInit = 0x0A1A4690 + 0x2000;
                         pointerGameStates = 0x0A19E058 + 0x2000;
                         pointerCutsceneTimer = 0x0A187430 + 0x2000;
@@ -153,12 +163,34 @@ namespace SRTPluginProviderRE8
                         pointerLei = 0x0A1B1C70 + 0x2000;
                         pointerAddressEnemies = 0x0A1B1D00 + 0x2000;
                         pointerChapter = 0x0A1B1DE8 + 0x2000;
+                        pointerRoom = 0x0A1B1B70 + 0x2000;
                         pointerAddressItemCount = 0x0A1B1C70 + 0x2000;
                         pointerAddressItems = 0x0A1A5880 + 0x2000;
                         return true;
                     }
+                case GameVersion.RE8_CEROZ_20210508_1:
+                    {
+                        pointerPlayerStatus = 0x0A3041F8 + 0x1000;
+                        pointerGameInit = 0x0A1A4690 + 0x1000;
+                        pointerGameStates = 0x0A19E058 + 0x1000;
+                        pointerCutsceneTimer = 0x0A187430 + 0x1000;
+                        pointerCutsceneStates = 0x0A1B1BA8 + 0x1000;
+                        pointerDukeStates = 0x0A1BB228 + 0x1000;
+                        pointerCutsceneID = 0x0A185C78 + 0x1000;
+                        pointerAddressHP = 0x0A18D990 + 0x1000;
+                        pointerPlayerPosition = 0x0A1B1B70 + 0x1000;
+                        pointerDA = 0x0A1A50C0 + 0x1000;
+                        pointerLei = 0x0A1B1C70 + 0x1000;
+                        pointerAddressEnemies = 0x0A1B1D00 + 0x1000;
+                        pointerChapter = 0x0A1B1DE8 + 0x1000;
+                        pointerRoom = 0x0A1B1B70 + 0x1000;
+                        pointerAddressItemCount = 0x0A1B1C70 + 0x1000;
+                        pointerAddressItems = 0x0A1A5880 + 0x1000;
+                        return true;
+                    }
                 case GameVersion.RE8_PROMO_01_20210426_1:
                     {
+                        pointerPlayerStatus = 0x0A3041F8 + 0x1030;
                         pointerGameInit = 0x0A1A4690 + 0x1030;
                         pointerGameStates = 0x0A19E058 + 0x1030;
                         pointerCutsceneTimer = 0x0A187430 + 0x1030;
@@ -171,6 +203,7 @@ namespace SRTPluginProviderRE8
                         pointerLei = 0x0A1B1C70 + 0x1030;
                         pointerAddressEnemies = 0x0A1B1D00 + 0x1030;
                         pointerChapter = 0x0A1B1DE8 + 0x1030;
+                        pointerRoom = 0x0A1B1B70 + 0x1030;
                         pointerAddressItemCount = 0x0A1B1C70 + 0x1030;
                         pointerAddressItems = 0x0A1A5880 + 0x1030;
                         return true;
@@ -233,6 +266,7 @@ namespace SRTPluginProviderRE8
         /// </summary>
         internal void UpdatePointers()
         {
+            PointerPlayerStatus.UpdatePointers();
             PointerGameInit.UpdatePointers();
             PointerGameStates.UpdatePointers();
             PointerCutsceneTimer.UpdatePointers();
@@ -245,6 +279,7 @@ namespace SRTPluginProviderRE8
             PointerLei.UpdatePointers();
             PointerCurrentView.UpdatePointers();
             PointerCurrentChapter.UpdatePointers();
+            PointerCurrentRoom.UpdatePointers();
             PointerTargetChapter.UpdatePointers();
             PointerEnemyCount.UpdatePointers();
             PointerEnemyEntryList.UpdatePointers();
@@ -291,6 +326,13 @@ namespace SRTPluginProviderRE8
             fixed (byte* p = &gameMemoryValues._dukeState)
                 success = PointerDukeStates.TryDerefByte(0x114, p);
 
+            // Player Status
+            if (SafeReadByteArray(PointerPlayerStatus.Address, sizeof(GamePlayerStatus), out byte[] gamePlayerStatus))
+            {
+                var playerStatus = GamePlayerStatus.AsStruct(gamePlayerStatus);
+                gameMemoryValues._playerstatus = playerStatus;
+            }
+
             // Player HP
             if (SafeReadByteArray(PointerPlayerHP.Address, sizeof(GamePlayerHP), out byte[] gamePlayerHpBytes))
             {
@@ -331,13 +373,16 @@ namespace SRTPluginProviderRE8
             {
                 byte[] current = PointerCurrentChapter.DerefByteArray(0x14, size2 * 2);
                 byte[] target = PointerTargetChapter.DerefByteArray(0x14, size3 * 2);
+                byte[] room = PointerCurrentRoom.DerefByteArray(0x14, 32 * 2);
                 gameMemoryValues._currentchapter = GetString(current);
                 gameMemoryValues._targetchapter = GetString(target);
+                gameMemoryValues._currentroom = GetString(room);
             }
             else
             {
                 gameMemoryValues._currentchapter = "None";
                 gameMemoryValues._targetchapter = "None";
+                gameMemoryValues._currentroom = "None";
             }
 
             // Enemy HP

@@ -1,10 +1,12 @@
 ﻿using System;
 using SRTPluginProviderRE8.Structs;
+using SRTPluginProviderRE8.Structs.GameStructs;
 
 namespace SRTPluginProviderRE8
 {
     public interface IGameMemoryRE8
     {
+        GamePlayerStatus PlayerStatus { get; set; }
         byte GameInit { get; set; }
         byte PauseState { get; set; }
         byte DukeState { get; set; }
@@ -27,6 +29,7 @@ namespace SRTPluginProviderRE8
         string CurrentView { get; set; }
         string CurrentChapter { get; set; }
         string TargetChapter { get; set; }
+        string CurrentRoom { get; set; }
 
         EnemyHP[] EnemyHealth { get; set; }
 

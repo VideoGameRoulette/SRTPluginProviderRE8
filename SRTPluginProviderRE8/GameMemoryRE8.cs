@@ -2,11 +2,15 @@
 using System.Globalization;
 using System.Runtime.InteropServices;
 using SRTPluginProviderRE8.Structs;
+using SRTPluginProviderRE8.Structs.GameStructs;
 
 namespace SRTPluginProviderRE8
 {
     public class GameMemoryRE8 : IGameMemoryRE8
     {
+        public GamePlayerStatus PlayerStatus { get => _playerstatus; set => _playerstatus = value; }
+        internal GamePlayerStatus _playerstatus;
+
         public byte GameInit { get => _gameInit; set => _gameInit = value; }
         internal byte _gameInit;
 
@@ -57,6 +61,8 @@ namespace SRTPluginProviderRE8
 
         public string TargetChapter { get => _targetchapter; set => _targetchapter = value; }
         internal string _targetchapter;
+        public string CurrentRoom { get => _currentroom; set => _currentroom = value; }
+        internal string _currentroom;
 
         public EnemyHP[] EnemyHealth { get => _enemyHealth; set => _enemyHealth = value; }
         internal EnemyHP[] _enemyHealth;

@@ -6,13 +6,13 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Platforms>x64</Platforms>
-    <Authors>Travis J. Gutjahr</Authors>
-    <Company>Travis J. Gutjahr</Company>
-    <Copyright>Copyright © 2021 Travis J. Gutjahr</Copyright>
+    <Authors>VideoGameRoulette</Authors>
+    <Company>VideoGameRoulette</Company>
+    <Copyright></Copyright>
     <Product>Resident Evil 8 (2021) Memory Provider Plugin</Product>
     <Description>A provider plugin for the SRT Host to provide memory values to other plugins.</Description>
-    <Version>1.0.0.9</Version>
-    <FileVersion>1.0.0.9</FileVersion>
+    <Version>1.0.1.2</Version>
+    <FileVersion>1.0.1.2</FileVersion>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <!-- netcoreapp3.1 had to be hardcoded here because this project reports $(TargetFramework) as netstandard2.0 (rightfully so) and I am not sure how this project's csproj can auto-detect another project's framework version to copy it to the appropriate folder so we're just... hardcoding this. -->
     <CopyDestionationPath>$(SolutionDir)..\SRTHost\SRTHost\bin\$(Platform)\$(Configuration)\netcoreapp3.1\plugins</CopyDestionationPath>
