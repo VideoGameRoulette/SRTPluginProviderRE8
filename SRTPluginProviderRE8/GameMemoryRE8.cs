@@ -3,33 +3,16 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using SRTPluginProviderRE8.Structs;
 using SRTPluginProviderRE8.Structs.GameStructs;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace SRTPluginProviderRE8
 {
     public class GameMemoryRE8 : IGameMemoryRE8
     {
+        public string VersionInfo => FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
         public PlayerStatus PlayerStatus { get => _playerstatus; set => _playerstatus = value; }
         internal PlayerStatus _playerstatus;
-
-        public byte GameInit { get => _gameInit; set => _gameInit = value; }
-        internal byte _gameInit;
-
-        public byte PauseState { get => _pauseState; set => _pauseState = value; }
-        internal byte _pauseState;
-
-        public byte DukeState { get => _dukeState; set => _dukeState = value; }
-        internal byte _dukeState;
-
-        public uint GameState { get => _gameState; set => _gameState = value; }
-        public uint _gameState;
-        public uint CutsceneTimer { get => _cutsceneTimer; set => _cutsceneTimer = value; }
-        internal uint _cutsceneTimer;
-
-        public uint CutsceneState { get => _cutsceneState; set => _cutsceneState = value; }
-        internal uint _cutsceneState;
-
-        public uint CutsceneID { get => _cutsceneID; set => _cutsceneID = value; }
-        internal uint _cutsceneID;
 
         public float PlayerCurrentHealth { get => _playerCurrentHealth; set => _playerCurrentHealth = value; }
         internal float _playerCurrentHealth;
@@ -53,16 +36,14 @@ namespace SRTPluginProviderRE8
         public int Lei { get => _lei; set => _lei = value; }
         internal int _lei;
 
-        public string CurrentView { get => _currentview; set => _currentview = value; }
-        internal string _currentview;
+        public int EventType { get => _eventType; set => _eventType = value; }
+        internal int _eventType;
 
-        public string CurrentChapter { get => _currentchapter; set => _currentchapter = value; }
-        internal string _currentchapter;
+        public byte IsMotionPlay { get => _isMotionPlay; set => _isMotionPlay = value; }
+        internal byte _isMotionPlay;
 
-        public string TargetChapter { get => _targetchapter; set => _targetchapter = value; }
-        internal string _targetchapter;
-        public string CurrentRoom { get => _currentroom; set => _currentroom = value; }
-        internal string _currentroom;
+        public string CurrentEvent { get => _currentevent; set => _currentevent = value; }
+        internal string _currentevent;
 
         public EnemyHP[] EnemyHealth { get => _enemyHealth; set => _enemyHealth = value; }
         internal EnemyHP[] _enemyHealth;

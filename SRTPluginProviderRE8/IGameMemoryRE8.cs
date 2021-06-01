@@ -6,16 +6,8 @@ namespace SRTPluginProviderRE8
 {
     public interface IGameMemoryRE8
     {
+        string VersionInfo { get; }
         PlayerStatus PlayerStatus { get; set; }
-        byte GameInit { get; set; }
-        byte PauseState { get; set; }
-        byte DukeState { get; set; }
-
-        uint GameState { get; set; }
-        uint CutsceneTimer { get; set; }
-        uint CutsceneState { get; set; }
-        uint CutsceneID { get; set; }
-
         float PlayerCurrentHealth { get; set; }
         float PlayerMaxHealth { get; set; }
         float PlayerPositionX { get; set; }
@@ -23,16 +15,12 @@ namespace SRTPluginProviderRE8
         float PlayerPositionZ { get; set; }
         int RankScore { get; set; }
         int Rank { get; set; }
-
         int Lei { get; set; }
-
-        string CurrentView { get; set; }
-        string CurrentChapter { get; set; }
-        string TargetChapter { get; set; }
-        string CurrentRoom { get; set; }
-
+        int EventType { get; set; }
+        byte IsMotionPlay { get; set; }
+        string CurrentEvent { get; set; }
+        InventoryEntry[] PlayerInventory { get; set; }
         EnemyHP[] EnemyHealth { get; set; }
-
         InventoryEntry LastKeyItem { get; set; }
 
     }

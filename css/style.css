@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&display=swap');
+body {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: #111;
+}
+
+a {
+    color: rgb(255, 115, 115);
+}
+
+#header {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+	width: 100%;
+	height: 60px;
+	top: 0px;
+	left: 0px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+	font-size: 16px;
+	text-align: center;
+	color: #7c6f72;
+}
+
+#logo {
+	height: 60px;
+	z-index: 3;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding-left: 0;
+    overflow: hidden;
+}
+
+li {
+	border-radius: 10px 10px 10px 10px;
+	margin-left: 5px;
+    float: left;
+	background-color: #d22424;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    padding: 20px 20px;
+    text-decoration: none;
+}
+
+li a:hover {
+	border-radius: 10px 10px 10px 10px;
+    background-color: pink;
+	color: black;
+}
+
+.middle {
+    padding-top: 10px;
+	width: 100%;
+	color: white;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+	font-size: 14px;
+	}
+
+.container {
+	width: 100%;
+}
+
+#project_description {
+	position: relative;
+	width: 100%;
+	font-size: 20px;
+}
+
+#version {
+	position: relative;
+	color: white;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+	}
+
+.headername {
+    position: relative;
+    padding-top: 10px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+	font-size: 30px;
+	text-align: left;
+	color: #d22424;
+}
+
+.description {
+	position: relative;
+	padding: 10px;
+	color: white;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
+#screenshot1, #screenshot2, #screenshot3 {
+	width: 25%;
+	border-radius: 20px 20px 20px 20px;
+	padding-top: 10px;
+}

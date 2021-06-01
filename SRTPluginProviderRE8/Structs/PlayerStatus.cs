@@ -1,72 +1,75 @@
-﻿using System.Diagnostics;
+﻿using ProcessMemory;
+using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace SRTPluginProviderRE8.Structs.GameStructs
 {
     public class PlayerStatus
     {
-        public bool IsEthan;
-        public bool IsChris;
-        public bool IsEnableUpdate;
-        public bool IsIdleUpperBody;
-        public bool IsGameOver;
-        public bool IsBlowDamage;
-        public bool IsBlowLand;
-        public bool IsHandsGuard;
-        public bool IsMeleeGuard;
-        public bool IsGunGuard;
-        public bool IsExternalGuard;
-        public bool IsFrontForbidAttackTarget;
-        public bool IsSlipDamage;
-        public bool IsNotifyAcidDamage;
-        public bool IsInfiniteBulletByFsmAction;
-        public bool IsHideShelf;
-        public bool IsHollow;
-        public bool IsDisableUpperRotate;
+        public bool IsEthan { get; private set; }
+        public bool IsChris { get; private set; }
+        public bool IsEnableUpdate { get; private set; }
+        public bool IsIdleUpperBody { get; private set; }
+        public bool IsGameOver { get; private set; }
+        public bool IsBlowDamage { get; private set; }
+        public bool IsBlowLand { get; private set; }
+        public bool IsHandsGuard { get; private set; }
+        public bool IsMeleeGuard { get; private set; }
+        public bool IsGunGuard { get; private set; }
+        public bool IsExternalGuard { get; private set; }
+        public bool IsFrontForbidAttackTarget { get; private set; }
+        public bool IsSlipDamage { get; private set; }
+        public bool IsNotifyAcidDamage { get; private set; }
+        public bool IsInfiniteBulletByFsmAction { get; private set; }
+        public bool IsHideShelf { get; private set; }
+        public bool IsHollow { get; private set; }
+        public bool IsDisableUpperRotate { get; private set; }
 
-        public long BaseAcionID;
-        public long UpperActionID;
-        public long LArmUpperActionID;
-        public long EventActionID;
+        public long BaseAcionID { get; private set; }
+        public long UpperActionID { get; private set; }
+        public long LArmUpperActionID { get; private set; }
+        public long EventActionID { get; private set; }
 
-        public bool IsMeleeAction;
-        public bool IsChrisPunch;
-        public bool IsGunAttack;
-        public bool IsGunAttackLoop;
-        public bool IsEnableChangeFovByAim;
-        public bool IsSprintForbiddenByOrder;
-        public bool IsCrouchForbidden;
-        public bool IsForceDisableProgramMovement;
-        public bool IsAttackForbiddenByOrder;
-        public bool IsGuardForbiddenByOrder;
-        public bool IsUpperBodyActionForbiddenByOrder;
-        public bool IsInputForbiddenByGUI;
-        public bool IsInShop;
-        public bool IsInInventoryMenu;
-        public bool IsInSelectMenu;
-        public bool IsEnableColdBreath;
-        public bool IsInSlipArea;
-        public bool IsInEscapeSlipArea;
-        public bool IsOnBridge;
-        public bool IsOnWaterSurface;
-        public bool IsExecuteThreeGunMatch;
-        public bool IsUseLeftHandWeapon;
-        public bool IsUseLeftHandSequence;
-        public bool IsDisableUseMine;
-        public bool IsFixedAimMode;
-        public bool IsEnableUseLaserIrradiation;
+        public bool IsMeleeAction { get; private set; }
+        public bool IsChrisPunch { get; private set; }
+        public bool IsGunAttack { get; private set; }
+        public bool IsGunAttackLoop { get; private set; }
+        public bool IsEnableChangeFovByAim { get; private set; }
+        public bool IsSprintForbiddenByOrder { get; private set; }
+        public bool IsCrouchForbidden { get; private set; }
+        public bool IsForceDisableProgramMovement { get; private set; }
+        public bool IsAttackForbiddenByOrder { get; private set; }
+        public bool IsGuardForbiddenByOrder { get; private set; }
+        public bool IsUpperBodyActionForbiddenByOrder { get; private set; }
+        public bool IsInputForbiddenByGUI { get; private set; }
+        public bool IsInShop { get; private set; }
+        public bool IsInInventoryMenu { get; private set; }
+        public bool IsInSelectMenu { get; private set; }
+        public bool IsEnableColdBreath { get; private set; }
+        public bool IsInSlipArea { get; private set; }
+        public bool IsInEscapeSlipArea { get; private set; }
+        public bool IsOnBridge { get; private set; }
+        public bool IsOnWaterSurface { get; private set; }
+        public bool IsExecuteThreeGunMatch { get; private set; }
+        public bool IsUseLeftHandWeapon { get; private set; }
+        public bool IsUseLeftHandSequence { get; private set; }
+        public bool IsDisableUseMine { get; private set; }
+        public bool IsFixedAimMode { get; private set; }
+        public bool IsEnableUseLaserIrradiation { get; private set; }
 
-        public long PlayerReference;
+        public long PlayerReference { get; private set; }
 
-        public bool IsInWaterAreaCam;
-        public bool IsNoReduceBullet;
-        public bool IsLoadingNumDouble;
-        public bool IsForbidReloadCommand;
-        public bool IsForbidAim;
+        public bool IsInWaterAreaCam { get; private set; }
+        public bool IsNoReduceBullet { get; private set; }
+        public bool IsLoadingNumDouble { get; private set; }
+        public bool IsForbidReloadCommand { get; private set; }
+        public bool IsForbidAim { get; private set; }
 
         public PlayerStatus()
         {
         }
+
         public void Update(GamePlayerStatus gs)
         {
             IsEthan = gs.IsEthan;
