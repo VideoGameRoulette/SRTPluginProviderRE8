@@ -4,10 +4,10 @@ body {
 	height: 100%;
 	background-image: url("https://images.pushsquare.com/19a383b57e842/resident-evil-village-demo-all-times-you-can-play-guide-1.original.jpg");
 	background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-	font-family: 'Courier Prime', monospace;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	font-family: "Courier Prime", monospace;
 }
 
 /* Full Body Container */
@@ -20,7 +20,7 @@ body {
 nav {
 	position: fixed;
 	z-index: 5;
-	left: 0px
+	left: 0px;
 }
 
 .nav-wrapper {
@@ -40,15 +40,19 @@ ul {
 	z-index: 2;
 	top: 0px;
 	left: 200px;
-  list-style-type: none;
-  margin: 0;
-  padding-left: 0;
-  overflow: hidden;
+	list-style-type: none;
+	margin: 0;
+	padding-left: 0;
+	overflow: hidden;
 }
 
 li {
 	color: white;
 	margin-left: 5px;
+}
+
+.tab:hover {
+	background: rgba(255,0,0,0.3);
 }
 
 /* Middle Body Section */
@@ -83,13 +87,15 @@ li {
 	border-left: 5px solid #990000;
 }
 
-#creator, #contributor, #version {
+#creator,
+#contributor,
+#version {
 	position: relative;
 	top: 0px;
 	left: -22px;
 	width: 100%;
 	padding-left: 10px;
-	background: rgba(0,0,0,0.6);
+	background: rgba(0, 0, 0, 0.6);
 }
 
 .headername {
@@ -101,7 +107,7 @@ li {
 	font-size: 30px;
 	text-align: left;
 	padding-left: 10px;
-	background: rgba(0,0,0,0.8);
+	background: rgba(0, 0, 0, 0.8);
 	color: #ff0000;
 }
 
@@ -112,17 +118,17 @@ li {
 	width: 100%;
 	padding: 10px;
 	color: white;
-	background: rgba(0,0,0,0.6);
+	background: rgba(0, 0, 0, 0.6);
 }
 
 .row {
-  text-align: center;
+	text-align: center;
 	padding-top: 10px;
 }
 
 .column {
 	width: 20%;
-  display: inline-block;
+	display: inline-block;
 }
 
 .videoWrapper {
@@ -146,8 +152,5 @@ li {
 	margin: 20px;
 	width: 100%;
 	text-align: center;
-	text-shadow: -1px -1px white, 
-		1px 1px white, 
-		-1px 1px white, 
-		1px -1px white;
+	text-shadow: -1px -1px white, 1px 1px white, -1px 1px white, 1px -1px white;
 }
