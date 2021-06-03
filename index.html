@@ -10,49 +10,79 @@
 </head>
 
 <body>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
-    <div id="header">
-	    <img id="logo" src="https://www.residentevil.com/village/assets/images/common/logo.png"></img>
-	    <ul>
-	    	<li><a href="https://github.com/VideoGameRoulette/SRTPluginProviderRE8">GitHub</a></li>
-	    	<li><a href="https://github.com/VideoGameRoulette/SRTPluginProviderRE8/releases/latest">Download</a></li>
-	    	<li><a href="https://videogameroulette.github.io/SRTResidentEvil8">Web UI</a></li>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700&display=swap" rel="stylesheet">
+
+<!-- Full Body Container -->
+<div class="container">
+
+	<!-- Header Navigation Bar -->
+	<nav>
+		<div class="nav-wrapper">
+			<div class="brand-logo">
+				<img id="logo" src="https://www.residentevil.com/village/assets/images/common/logo.png"></img>
+			</div>
+			<ul id="nav-mobile" class="right hide-on-med-and-down">
+				<li><a href="https://github.com/VideoGameRoulette/SRTPluginProviderRE8">GitHub</a></li>
+        <li><a href="https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-desktop-3.1.3-windows-x64-installer">.Net Core Runtime</a></li>
+	    	<li><a href="https://github.com/VideoGameRoulette/SRTPluginProviderRE8/releases/latest">SRTHost Package</a></li>
+				<li><a href="https://github.com/VideoGameRoulette/SRTPluginUIRE8DirectXOverlay/releases/latest">DirectX Plugin</a></li>
+	    	<li><a href="https://videogameroulette.github.io/SRTResidentEvil8">Web Browser UI</a></li>
 	    	<li><a href="https://www.twitch.tv/VideoGameRoulette">Twitch</a></li>
 	    	<li><a href="https://twitter.com/VGRoulette">Twitter</a></li>
 	    	<li><a href="https://discord.gg/QEvpZ5yHeM">RE8 Discord</a></li>
-	    </ul>
-    </div>
+			</ul>
+		</div>
+    </nav>
+    <!-- Header End -->
 
-    <div class="middle">
-    	<div class="container">
-    		<div id="project_description">Resident Evil Village Speedrun Tools.</div>
-    		<div id="creator">Created By: VideoGameRoulette, CursedToast, and Squirrelies</div>
-    		<!-- <div id="contributor">Contributors: VideoGameRoulette, CursedToast, and Squirrelies</div> -->
-    		<div id="version">Current Version: 1.0.1.5</div>
-    	</div>
+	<!-- Middle Body Section -->
+	<div class="middle">
+		<div class="headername">About</div>
+		<div class="description">SRTHost is a .Net Core application for helping facilitate memory scanning and output for universal speedrunning tools.</div>
 
-        <div class="headername">Versions Support</div>
-        <div class="description">- Steam World Wide</div>
-        <div class="description">- Steam CeroD</div>
-        <div class="description">- Steam CeroZ</div>
+		<div class="info">
+			<div id="creator">Created By: VideoGameRoulette, CursedToast, and Squirrelies</div>
+			<div id="version">Current Version: 1.0.1.5</div>
+		</div>
 
-    	<div class="headername">SRTPluginProviderRE8</div>
-        <div class="description">Version: 1.0.1.5</div>
-        <a href="https://www.dropbox.com/s/jnthonxfys2uvjk/SRTPluginProviderRE8-v1.0.1.5.zip?dl=1">Download</a>
+		<div class="videoWrapper"><iframe width="960" height="540" src="https://www.youtube.com/embed/mdc_D8XZDZM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
-    	<div class="headername">SRTPluginUIRE8DirectXOverlay</div>
-        <div class="description">Version: 1.0.1.5</div>
-        <a href="https://www.dropbox.com/s/txj21r7ia48feuf/SRTPluginUIRE8DirectXOverlay-v1.0.1.5.zip?dl=1">Download</a>
-        
-        <div class="headername">RE8FOV</div>
-        <div class="description">Version: 1.0.1</div>
-        <a href="https://www.neonblu.com/Tools/RE8/RE8FOV_v1010-Release.7z">Download</a>
-    	<!-- <img id="screenshot1" src="https://cdn.discordapp.com/attachments/548914397527932938/554832638456627211/20190311210429_1.jpg" /> -->
+		<div class="headername">How To Install</div>
+		<div class="description">
+			Install .Net Core Runtime 3.1.X
+			<li>go to the download link provided above for ".Net Core Runtime" and install it to computer it is required to run this application.</li>
 
-    </div>
-  
-  
+			Install SRTHost
+			<li>go to the download link provided above for "SRTHost Package" and extract it to any folder example lets make a folder called SRTHost on the desktop and drag the all items from the zip file into that folder.</li>
 
+			Install DirectX Plugin
+			<li>go to the download link provided above for "DirectX Plugin" and take the folder inside the zip and drag it into the plugins folder inside of your SRTHost folder you created.</li>
+		</div>
+		<br>
+		<!--<div class="row">
+			<div class="column">
+				<img id="screenshot1" src="https://cdn.discordapp.com/attachments/551840398016774193/703535354631946281/unknown.png" style="width:100%" />
+			</div>
+			<div class="column">
+				<img id="screenshot2" src="https://cdn.discordapp.com/attachments/551840398016774193/703535475591479396/unknown.png" style="width:100%" />
+			</div>
+		</div>-->
+		
+		<div class="headername">How To Use Web UI</div>
+		<div class="description">
+			Web Browser
+			<li>click on the "Web Browser UI" tab above to reveal the SRT UI in your local web browser</li>
+			OBS Studio
+			<li>copy the link provided from "Web Browser UI" tab above and paste it into a web browser source in obs.</li>
+		</div>
+		
+		<div id="footer">©VideoGameRoulette 2021</div>
+    </div> 
+    <!-- Middle End -->
+</div> 
+<!-- Full Body Container End -->
 </body>
 
 </html>
