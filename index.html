@@ -34,8 +34,7 @@
 	    	<li><a href="https://discord.gg/QEvpZ5yHeM">RE8 Discord</a></li>
 			</ul>
 		</div>
-    </nav>
-    <!-- Header End -->
+	</nav>
 
 	<!-- Middle Body Section -->
 	<div class="middle">
@@ -77,12 +76,34 @@
 			OBS Studio
 			<li>copy the link provided from "Web Browser UI" tab above and paste it into a web browser source in obs.</li>
 		</div>
+		<br>
+		<div class="headername">Custom Params Web UI</div>
+		<div class="description">
+			Disables Debug Info
+			<li>debug=1</li>
+			Disables Event Info
+			<li>event=1</li>
+			Disables Stats Info
+			<li>stats=1</li>
+			Disables Position Info
+			<li>position=1</li>
+			Disables Enemy HP Info
+			<li>enemy=1</li>
+		</div>
+		<br>
+		<div class="headername">Examples</div>
+		<div class="description">
+			Disables All Except PlayerHP
+			<li>?event=1&position=1&stats=1&debug=1&enemy=1</li>
+			Disables All Except PlayerHP and EnemyHP
+			<li>?event=1&position=1&stats=1&debug=1</li>
+			Disables Event Info, Position Info, and Debug Info
+			<li>?event=1&position=1&debug=1</li>
+		</div>
 		
-		<div id="footer">©VideoGameRoulette 2021</div>
-    </div> 
-    <!-- Middle End -->
-</div> 
-<!-- Full Body Container End -->
+		<div id="footer">VideoGameRoulette 2021</div>
+	</div> <!-- Middle End -->
+</div> <!-- Full Body Container End -->
 </body>
 
 </html>
