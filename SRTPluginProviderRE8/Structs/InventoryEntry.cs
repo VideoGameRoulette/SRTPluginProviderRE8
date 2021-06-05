@@ -18,17 +18,17 @@ namespace SRTPluginProviderRE8.Structs
             get
             {
                 if (IsItem && IsAmmoClip) 
-                    return string.Format("Weapon Clip {0} Quantity {1}", (ItemEnumeration)ItemID, Quantity);
+                    return string.Format("Weapon Clip {0} Quantity {1}", (ItemEnumeration)ItemID, StackSize);
                 else if (IsItem && !IsAmmoClip)
-                    return string.Format("[#{0}] Item {1} Quantity {2}", SlotPosition, (ItemEnumeration)ItemID, Quantity);
+                    return string.Format("[#{0}] Item {1} Quantity {2}", SlotNo, (ItemEnumeration)ItemID, StackSize);
                 else if (IsWeapon)
-                    return string.Format("[#{0}] Weapon {1} Ammo {2}", SlotPosition, (WeaponEnumeration)ItemID, Ammo);
+                    return string.Format("[#{0}] Weapon {1} Ammo {2}", SlotNo, (WeaponEnumeration)ItemID, IncludeStackSize);
                 else if (IsKeyItem)
                     return string.Format("Key Item {0}", (KeyItemEnumeration)ItemID);
                 else if (IsTreasure)
-                    return string.Format("Treasure {0} Quantity {1}", (TreasureEnumeration)ItemID, Quantity);
+                    return string.Format("Treasure {0} Quantity {1}", (TreasureEnumeration)ItemID, StackSize);
                 else if (IsCraftable)
-                    return string.Format("Craftable {0} Quantity {1}", (CraftableEnumeration)ItemID, Quantity);
+                    return string.Format("Craftable {0} Quantity {1}", (CraftableEnumeration)ItemID, StackSize);
                 else if (IsMap)
                     return string.Format("Map {0}", (CraftableEnumeration)ItemID);
                 else if (ItemID > 0)
@@ -63,27 +63,44 @@ namespace SRTPluginProviderRE8.Structs
 
         // Storage variable.
         // Accessor properties.
+        public byte IsTemporary { get => _isTemporary; set => _isTemporary = value; }
+        internal byte _isTemporary;
+        public int SortOrder { get => _sortOrder; set => _sortOrder = value; }
+        internal int _sortOrder;
+        public byte IsUsing { get => _isUsing; set => _isUsing = value; }
+        internal byte _isUsing;
         public uint ItemID { get => _itemid; set => _itemid = value; }
         internal uint _itemid;
-        public byte HasAttachment { get => _hasAttachment; set => _hasAttachment = value; }
-        internal byte _hasAttachment;
-        public uint SlotPosition { get => _slotPosition; set => _slotPosition = value; }
-        internal uint _slotPosition;
-        //public AttachmentsFlag Attachments => (AttachmentsFlag)_data[2];
+        public uint ItemCategoryHash { get => _itemCategoryHash; set => _itemCategoryHash = value; }
+        internal uint _itemCategoryHash;
+        public int SlotNo { get => _slotNo; set => _slotNo = value; }
+        internal int _slotNo;
+        public uint QuickSlotHash { get => _quickSlotHash; set => _quickSlotHash = value; }
+        internal uint _quickSlotHash;
         public bool IsItem => Enum.IsDefined(typeof(ItemEnumeration), _itemid);
         public bool IsWeapon => Enum.IsDefined(typeof(WeaponEnumeration), _itemid);
         public bool IsKeyItem => Enum.IsDefined(typeof(KeyItemEnumeration), _itemid);
         public bool IsTreasure => Enum.IsDefined(typeof(TreasureEnumeration), _itemid);
         public bool IsCraftable => Enum.IsDefined(typeof(CraftableEnumeration), _itemid);
         public bool IsMap => Enum.IsDefined(typeof(MapEnumeration), _itemid);
-        public bool IsAmmoClip => SlotPosition == 0xFFFFFFFF;
+        public bool IsAmmoClip => _slotNo > 256;
         public bool IsItemSlot => IsItem && !IsAmmoClip || IsWeapon;
-        public int Quantity { get => _quantity; set => _quantity = value; }
-        internal int _quantity;
+        public int StackSize { get => _stackSize; set => _stackSize = value; }
+        internal int _stackSize;
         public byte IsHorizontal { get => _ishorizontal; set => _ishorizontal = value; }
         internal byte _ishorizontal;
-        public int Ammo { get => _ammo; set => _ammo = value; }
-        internal int _ammo;
+        public uint IncludeItemID { get => _includeItemID; set => _includeItemID = value; }
+        internal uint _includeItemID;
+        public int IncludeStackSize { get => _includeStackSize; set => _includeStackSize = value; }
+        internal int _includeStackSize;
+        public uint IncludeItemIDSub { get => _includeItemIDSub; set => _includeItemIDSub = value; }
+        internal uint _includeItemIDSub;
+        public int IncludeStackSizeSub { get => _includeStackSizeSub; set => _includeStackSizeSub = value; }
+        internal int _includeStackSizeSub;
+        public byte IsHidden { get => _isHidden; set => _isHidden = value; }
+        internal byte _isHidden;
+        public InventoryEntryCustomParams CustomParameter { get => _customParameter; set => _customParameter = value; }
+        internal InventoryEntryCustomParams _customParameter;
 
         //public bool Equals(InventoryEntry other) => this == other;
         //public bool Equals(InventoryEntry x, InventoryEntry y) => x == y;

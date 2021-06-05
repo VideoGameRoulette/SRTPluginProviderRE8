@@ -57,6 +57,7 @@ namespace SRTPluginProviderRE8
         private MultilevelPointer PointerInventoryCount { get; set; }
         private MultilevelPointer PointerInventoryEntryList { get; set; }
         private MultilevelPointer[] PointerInventoryEntries { get; set; }
+        private MultilevelPointer[] PointerInventoryEntriesCustom { get; set; }
         internal GameMemoryRE8Scanner(Process process = null)
         {
             gameMemoryValues = new GameMemoryRE8();
@@ -154,7 +155,9 @@ namespace SRTPluginProviderRE8
                 PointerInventory = new MultilevelPointer(
                     memoryAccess, 
                     IntPtr.Add(BaseAddress, pointerInventory), 
-                    0x60
+                    0x60L,
+                    0x18L,
+                    0x10L
                 );
 
                 //Enemies
@@ -178,7 +181,9 @@ namespace SRTPluginProviderRE8
                 PointerInventoryCount = new MultilevelPointer(
                     memoryAccess, 
                     IntPtr.Add(BaseAddress, pointerInventory), 
-                    0x88L
+                    0x60L,
+                    0x18L,
+                    0x10L
                 );
 
                 PointerInventoryEntryList = new MultilevelPointer(
@@ -200,7 +205,7 @@ namespace SRTPluginProviderRE8
                     {
                         pointerRankManager = 0x0A1A50C0 + 0x1030;
                         pointerAddressItems = 0x0A1A5880 + 0x1030;
-                        pointerInventory = 0x0A1B1C70 + 0x1030;
+                        pointerInventory = 0x0A1B29F0 + 0x1030;
                         pointerAddressEnemies = 0x0A1B1D00 + 0x1030;
                         pointerPropsManager = 0x0A18D990 + 0x1030;
                         pointerEventActionTask = 0x0A182B38 + 0x1030;
@@ -210,7 +215,7 @@ namespace SRTPluginProviderRE8
                     {
                         pointerRankManager = 0x0A1A50C0;
                         pointerAddressItems = 0x0A1A5880;
-                        pointerInventory = 0x0A1B1C70;
+                        pointerInventory = 0x0A1B29F0;
                         pointerAddressEnemies = 0x0A1B1D00;
                         pointerPropsManager = 0x0A18D990;
                         pointerEventActionTask = 0x0A182B38;
@@ -220,7 +225,7 @@ namespace SRTPluginProviderRE8
                     {
                         pointerRankManager = 0x0A1A50C0 + 0x2000;
                         pointerAddressItems = 0x0A1A5880 + 0x2000;
-                        pointerInventory = 0x0A1B1C70 + 0x2000;
+                        pointerInventory = 0x0A1B29F0 + 0x2000;
                         pointerAddressEnemies = 0x0A1B1D00 + 0x2000;
                         pointerPropsManager = 0x0A18D990 + 0x2000;
                         pointerEventActionTask = 0x0A182B38 + 0x2000;
@@ -271,9 +276,10 @@ namespace SRTPluginProviderRE8
         {
             bool success;
             fixed (int* p = &InventoryTableCount)
-                success = PointerInventoryCount.TryDerefInt(0x2C, p);
+                success = PointerInventoryCount.TryDerefInt(0x1C, p);
 
             PointerInventoryEntries = new MultilevelPointer[MAX_ITEMS];
+            PointerInventoryEntriesCustom = new MultilevelPointer[MAX_ITEMS];
 
             // Skip the first 28 bytes and read the rest as a byte array
             // This can be done because the pointers are stored sequentially in an array
@@ -286,6 +292,7 @@ namespace SRTPluginProviderRE8
             for (int i = 0; i < PointerInventoryEntries.Length; ++i)
             {
                 PointerInventoryEntries[i] = new MultilevelPointer(memoryAccess, IntPtr.Add(inventoryEntriesPtrArr[i], 0x58));
+                PointerInventoryEntriesCustom[i] = new MultilevelPointer(memoryAccess, IntPtr.Add(inventoryEntriesPtrArr[i], 0x58), 0x90);
             }
 
         }
@@ -450,7 +457,10 @@ namespace SRTPluginProviderRE8
             {
                 gameMemoryValues._playerInventory = new InventoryEntry[MAX_ITEMS];
                 for (int i = 0; i < gameMemoryValues._playerInventory.Length; ++i)
+                {
                     gameMemoryValues._playerInventory[i] = new InventoryEntry();
+                    gameMemoryValues._playerInventory[i].CustomParameter = new InventoryEntryCustomParams();
+                } 
             }
             for (int i = 0; i < gameMemoryValues._playerInventory.Length; ++i)
             {
@@ -461,68 +471,91 @@ namespace SRTPluginProviderRE8
                     {
                         var inventoryItem = GameInventoryItem.AsStruct(inventoryItemBytes);
 
-
                         // This hook is a little poorly done... but good enough for now
-                        gameMemoryValues.PlayerInventory[i]._itemid = inventoryItem.ItemId;
+                        gameMemoryValues.PlayerInventory[i]._isTemporary = 255;
+                        gameMemoryValues.PlayerInventory[i]._sortOrder = 255;
+                        gameMemoryValues.PlayerInventory[i]._isUsing = 255;
+                        gameMemoryValues.PlayerInventory[i]._itemid = 0xFFFFFFFF;
+                        gameMemoryValues.PlayerInventory[i]._itemCategoryHash = 0xFFFFFFFF;
+                        gameMemoryValues.PlayerInventory[i]._slotNo = -1;
+                        gameMemoryValues.PlayerInventory[i]._quickSlotHash = 0xFFFFFFFF;
+                        gameMemoryValues.PlayerInventory[i]._stackSize = -1;
+                        gameMemoryValues.PlayerInventory[i]._ishorizontal = 255;
+                        gameMemoryValues.PlayerInventory[i]._includeItemID = 0xFFFFFFFF;
+                        gameMemoryValues.PlayerInventory[i]._includeStackSize = -1;
+                        gameMemoryValues.PlayerInventory[i]._includeItemIDSub = 0xFFFFFFFF;
+                        gameMemoryValues.PlayerInventory[i]._includeStackSizeSub = -1;
+                        gameMemoryValues.PlayerInventory[i]._isHidden = 255;
+                        gameMemoryValues.PlayerInventory[i]._customParameter._power = 0;
+                        gameMemoryValues.PlayerInventory[i]._customParameter._rate = 0;
+                        gameMemoryValues.PlayerInventory[i]._customParameter._reload = 0;
+                        gameMemoryValues.PlayerInventory[i]._customParameter._stackSize = -1;
 
-                        if (gameMemoryValues.PlayerInventory[i].IsItem)
+                        if (gameMemoryValues.PlayerInventory[i].IsItem || gameMemoryValues.PlayerInventory[i].IsWeapon)
                         {
-                            gameMemoryValues.PlayerInventory[i]._hasAttachment = 0;
-                            gameMemoryValues.PlayerInventory[i]._slotPosition = inventoryItem.SlotPosition;
-                            gameMemoryValues.PlayerInventory[i]._quantity = inventoryItem.Quantity;
+                            gameMemoryValues.PlayerInventory[i]._isTemporary = inventoryItem.IsTemporary;
+                            gameMemoryValues.PlayerInventory[i]._sortOrder = inventoryItem.SortOrder;
+                            gameMemoryValues.PlayerInventory[i]._isUsing = inventoryItem.IsUsing;
+                            gameMemoryValues.PlayerInventory[i]._slotNo = inventoryItem.SlotNo;
+                            gameMemoryValues.PlayerInventory[i]._quickSlotHash = inventoryItem.QuickSlotHash;
+                            gameMemoryValues.PlayerInventory[i]._stackSize = inventoryItem.StackSize;
                             gameMemoryValues.PlayerInventory[i]._ishorizontal = inventoryItem.IsHorizontal;
-                            gameMemoryValues.PlayerInventory[i]._ammo = -1;
-                        }
-                        else if (gameMemoryValues.PlayerInventory[i].IsWeapon)
-                        {
-                            gameMemoryValues.PlayerInventory[i]._hasAttachment = inventoryItem.HasAttachment;
-                            gameMemoryValues.PlayerInventory[i]._slotPosition = inventoryItem.SlotPosition;
-                            gameMemoryValues.PlayerInventory[i]._quantity = inventoryItem.Quantity;
-                            gameMemoryValues.PlayerInventory[i]._ishorizontal = inventoryItem.IsHorizontal;
-                            gameMemoryValues.PlayerInventory[i]._ammo = inventoryItem.Ammo;
+                            gameMemoryValues.PlayerInventory[i]._includeItemID = inventoryItem.IncludeItemID;
+                            gameMemoryValues.PlayerInventory[i]._includeStackSize = inventoryItem.IncludeStackSize;
+                            gameMemoryValues.PlayerInventory[i]._includeItemIDSub = inventoryItem.IncludeItemIDSub;
+                            gameMemoryValues.PlayerInventory[i]._includeStackSizeSub = inventoryItem.IncludeStackSizeSub;
+                            gameMemoryValues.PlayerInventory[i]._isHidden = inventoryItem.IsHidden;
+                            if (SafeReadByteArray(PointerInventoryEntriesCustom[i].Address, sizeof(GameItemCustomParams), out byte[] itemCustomBytes))
+                            {
+                                var customParams = GameItemCustomParams.AsStruct(itemCustomBytes);
+                                gameMemoryValues.PlayerInventory[i]._customParameter._power = customParams.Power;
+                                gameMemoryValues.PlayerInventory[i]._customParameter._rate = customParams.Rate;
+                                gameMemoryValues.PlayerInventory[i]._customParameter._reload = customParams.Reload;
+                                gameMemoryValues.PlayerInventory[i]._customParameter._stackSize = customParams.StackSize;
+                            }
                         }
                         else if (gameMemoryValues.PlayerInventory[i].IsKeyItem || gameMemoryValues.PlayerInventory[i].IsCraftable || gameMemoryValues.PlayerInventory[i].IsTreasure)
                         {
-                            gameMemoryValues.PlayerInventory[i]._hasAttachment = 0;
-                            gameMemoryValues.PlayerInventory[i]._slotPosition = 255;
-                            gameMemoryValues.PlayerInventory[i]._quantity = inventoryItem.Quantity;
-                            gameMemoryValues.PlayerInventory[i]._ishorizontal = 0;
-                            gameMemoryValues.PlayerInventory[i]._ammo = -1;
-                        }
-                        else
-                        {
-                            gameMemoryValues.PlayerInventory[i]._hasAttachment = 0;
-                            gameMemoryValues.PlayerInventory[i]._slotPosition = 0;
-                            gameMemoryValues.PlayerInventory[i]._quantity = 0;
-                            gameMemoryValues.PlayerInventory[i]._ishorizontal = 0;
-                            gameMemoryValues.PlayerInventory[i]._ammo = -1;
+                            gameMemoryValues.PlayerInventory[i]._stackSize = inventoryItem.StackSize;
                         }
                     }
                     else
                     {
                         // Clear these values out so stale data isn't left behind when the pointer address is no longer value and nothing valid gets read.
                         // This happens when the game removes pointers from the table (map/room change).
-                        gameMemoryValues.PlayerInventory[i]._itemid = 0;
-                        gameMemoryValues.PlayerInventory[i]._hasAttachment = 0;
-                        gameMemoryValues.PlayerInventory[i]._slotPosition = 0;
-                        gameMemoryValues.PlayerInventory[i]._quantity = 0;
-                        gameMemoryValues.PlayerInventory[i]._ishorizontal = 0;
-                        gameMemoryValues.PlayerInventory[i]._ammo = -1;
+                        EmptySlot(i);
                     }
                 }
                 catch
                 {
-                    gameMemoryValues.PlayerInventory[i]._itemid = 0;
-                    gameMemoryValues.PlayerInventory[i]._hasAttachment = 0;
-                    gameMemoryValues.PlayerInventory[i]._slotPosition = 0;
-                    gameMemoryValues.PlayerInventory[i]._quantity = 0;
-                    gameMemoryValues.PlayerInventory[i]._ishorizontal = 0;
-                    gameMemoryValues.PlayerInventory[i]._ammo = -1;
+                    EmptySlot(i);
                 }
             }
 
             HasScanned = true;
             return gameMemoryValues;
+        }
+
+        private void EmptySlot(int i)
+        {
+            gameMemoryValues.PlayerInventory[i]._isTemporary = 255;
+            gameMemoryValues.PlayerInventory[i]._sortOrder = 255;
+            gameMemoryValues.PlayerInventory[i]._isUsing = 255;
+            gameMemoryValues.PlayerInventory[i]._itemid = 0xFFFFFFFF;
+            gameMemoryValues.PlayerInventory[i]._itemCategoryHash = 0xFFFFFFFF;
+            gameMemoryValues.PlayerInventory[i]._slotNo = -1;
+            gameMemoryValues.PlayerInventory[i]._quickSlotHash = 0xFFFFFFFF;
+            gameMemoryValues.PlayerInventory[i]._stackSize = -1;
+            gameMemoryValues.PlayerInventory[i]._ishorizontal = 255;
+            gameMemoryValues.PlayerInventory[i]._includeItemID = 0xFFFFFFFF;
+            gameMemoryValues.PlayerInventory[i]._includeStackSize = -1;
+            gameMemoryValues.PlayerInventory[i]._includeItemIDSub = 0xFFFFFFFF;
+            gameMemoryValues.PlayerInventory[i]._includeStackSizeSub = -1;
+            gameMemoryValues.PlayerInventory[i]._isHidden = 255;
+            gameMemoryValues.PlayerInventory[i]._customParameter._power = 0;
+            gameMemoryValues.PlayerInventory[i]._customParameter._rate = 0;
+            gameMemoryValues.PlayerInventory[i]._customParameter._reload = 0;
+            gameMemoryValues.PlayerInventory[i]._customParameter._stackSize = -1;
         }
 
         private string GetString(byte[] value)
