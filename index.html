@@ -1,58 +1,196 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>RE8 SRT Update Index</title>
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+	<meta charset="UTF-8">
+	<title>RE8 SRT Update Index</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="css/style.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
 <body>
+	<!-- Header Navigation Bar -->
+	<nav>
+		<div class="nav-wrapper blue-grey darken-4">
+			<div class="brand-logo">
+				<img id="logo" src="https://www.residentevil.com/village/assets/images/common/logo.png" alt="RE8 SRT"></img>
+			</div>
+			<ul id="nav-mobile" class="right hide-on-med-and-down">
+				<li class="tab"><a href="https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-3.1.15-windows-x64-installer">.Net Core Runtime</a></li>
+				<li class="tab"><a href="https://videogameroulette.github.io/SRTResidentEvil8">Web Browser UI</a></li>
+			</ul>
+		</div>
+	</nav>
 
-    <div id="header">
-	    <img id="logo" src="https://www.residentevil.com/village/assets/images/common/logo.png"></img>
-	    <ul>
-	    	<li><a href="https://github.com/VideoGameRoulette/SRTPluginProviderRE8">GitHub</a></li>
-	    	<li><a href="https://github.com/VideoGameRoulette/SRTPluginProviderRE8/releases/latest">Download</a></li>
-	    	<li><a href="https://videogameroulette.github.io/SRTResidentEvil8">Web UI</a></li>
-	    	<li><a href="https://www.twitch.tv/VideoGameRoulette">Twitch</a></li>
-	    	<li><a href="https://twitter.com/VGRoulette">Twitter</a></li>
-	    	<li><a href="https://discord.gg/QEvpZ5yHeM">RE8 Discord</a></li>
-	    </ul>
-    </div>
+	<div class="info">
+		<div id="version">Current Version: 1.0.1.5</div>
+	</div>
 
-    <div class="middle">
-    	<div class="container">
-    		<div id="project_description">Resident Evil Village Speedrun Tools.</div>
-    		<div id="creator">Created By: VideoGameRoulette, CursedToast, and Squirrelies</div>
-    		<!-- <div id="contributor">Contributors: VideoGameRoulette, CursedToast, and Squirrelies</div> -->
-    		<div id="version">Current Version: 1.0.1.5</div>
-    	</div>
+	<div class="section no-pad-bot" id="index-banner">
+		<div class="container">
+			<br><br>
+			<h1 class="header center orange-text">About</h1>
+			<div class="row center">
+				<h5 class="header col s12 light">SRTHost is a .Net Core application for helping facilitate memory scanning and output for universal speedrunning tools.</h5>
+			</div>
+			<div class="row center">
+				<a href="https://github.com/VideoGameRoulette/SRTPluginProviderRE8/releases/latest" id="download-button" class="btn-large waves-effect waves-light teal accent-4">Download Package</a>
+			</div>
+			<br><br>
 
-        <div class="headername">Versions Support</div>
-        <div class="description">- Steam World Wide</div>
-        <div class="description">- Steam CeroD</div>
-        <div class="description">- Steam CeroZ</div>
+		</div>
+	</div>
 
-    	<div class="headername">SRTPluginProviderRE8</div>
-        <div class="description">Version: 1.0.1.5</div>
-        <a href="https://www.dropbox.com/s/jnthonxfys2uvjk/SRTPluginProviderRE8-v1.0.1.5.zip?dl=1">Download</a>
+	<div class="container">
+		<div class="section">
 
-    	<div class="headername">SRTPluginUIRE8DirectXOverlay</div>
-        <div class="description">Version: 1.0.1.5</div>
-        <a href="https://www.dropbox.com/s/txj21r7ia48feuf/SRTPluginUIRE8DirectXOverlay-v1.0.1.5.zip?dl=1">Download</a>
-        
-        <div class="headername">RE8FOV</div>
-        <div class="description">Version: 1.0.1</div>
-        <a href="https://www.neonblu.com/Tools/RE8/RE8FOV_v1010-Release.7z">Download</a>
-    	<!-- <img id="screenshot1" src="https://cdn.discordapp.com/attachments/548914397527932938/554832638456627211/20190311210429_1.jpg" /> -->
+			<!--   Icon Section   -->
+			<div class="row">
+				<div class="col s12 m4">
+					<div class="icon-block">
+						<h2 class="center orange-text"><i class="material-icons">flash_on</i></h2>
+						<h5 class="center">Speeds up development</h5>
 
-    </div>
-  
-  
+						<p class="light">We did most of the heavy lifting for you to provide a default application that incorporates your custom components. Additionally, we refined SRTHost functionality to provide a smoother experience for developers.</p>
+					</div>
+				</div>
 
+				<div class="col s12 m4">
+					<div class="icon-block">
+						<h2 class="center orange-text"><i class="material-icons">group</i></h2>
+						<h5 class="center">User Experience Focused</h5>
+
+						<p class="light">By utilizing elements and principles of .Net Core, we were able to create a framework that incorporates easy to use components that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
+					</div>
+				</div>
+
+				<div class="col s12 m4">
+					<div class="icon-block">
+						<h2 class="center orange-text"><i class="material-icons">settings</i></h2>
+						<h5 class="center">Easy to work with</h5>
+
+						<p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about SRTHost.</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<br><br>
+	</div>
+
+	<div class="container">
+
+		<ul class="collection">
+			<li class="collection-item blue-grey darken-4 avatar">
+				<img src="https://cdn.discordapp.com/avatars/102973049204142080/7f173abf975736dc02ae06c09e0b96ef.png?size=128" alt="" class="circle">
+				<span class="title orange-text">SRT Plugin Lead Dev</span>
+				<p>VideoGameRoulette</p>
+				<a href="https://github.com/VideoGameRoulette" class="secondary-content"><i class="material-icons teal-text text-accent-3">archive</i></a>
+			</li>
+			<li class="collection-item blue-grey darken-1 avatar">
+				<img src="https://cdn.discordapp.com/avatars/214543787479924736/7a0a95da75533377296187348a45c47c.png?size=128" alt="" class="circle">
+				<span class="title orange-text">SRT Host Lead Dev</span>
+				<p>Squirrelies</p>
+				<a href="https://github.com/Squirrelies" class="secondary-content"><i class="material-icons teal-text text-accent-3">archive</i></a>
+			</li>
+			<li class="collection-item blue-grey darken-4 avatar">
+				<img src="https://cdn.discordapp.com/avatars/105118805948145664/9ced845b7d4872bb7eee6e6a0a2b063d.png?size=128" alt="" class="circle">
+				<span class="title orange-text">Autosplitter Lead Dev</span>
+				<p>CursedToast</p>
+				<a href="https://github.com/CursedToast" class="secondary-content"><i class="material-icons teal-text text-accent-3">archive</i></a>
+			</li>
+		</ul>
+
+		<div class="row">
+			<div class="col s12 m12">
+				<div class="card blue-grey darken-2">
+					<div class="card-content white-text">
+						<span class="card-title orange-text">SRT Host</span>
+						<p>A plugin host for various informational Speedrun Tools.</p>
+					</div>
+					<div class="card-action">
+						<a class="teal-text text-accent-3" href="https://www.neonblu.com/SRT/Host/SRTHost_2440-Beta-Signed-Release.7z">Download</a>
+						<a class="teal-text text-accent-3" href="https://github.com/Squirrelies/SRTHost">Source Code</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col s12 m12">
+				<div class="card blue-grey darken-4">
+					<div class="card-content white-text">
+						<span class="card-title orange-text">SRTPluginProviderRE8</span>
+						<p>A provider plugin of Resident Evil 8 (2021) for the SRT Host to provide memory values to other plugins.</p>
+					</div>
+					<div class="card-action">
+						<a class="teal-text text-accent-3" href="https://www.dropbox.com/s/jnthonxfys2uvjk/SRTPluginProviderRE8-v1.0.1.5.zip?dl=1">Download</a>
+						<a class="teal-text text-accent-3" href="https://github.com/VideoGameRoulette/SRTPluginProviderRE8">Source Code</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col s12 m12">
+				<div class="card blue-grey darken-2">
+					<div class="card-content white-text">
+						<span class="card-title orange-text">SRTPluginUIRE8DirectXOverlay</span>
+						<p>A DirectX plugin of Resident Evil 8 (2021) for the SRT Host to provide in-game overlay.</p>
+					</div>
+					<div class="card-action">
+						<a class="teal-text text-accent-3" href="https://www.dropbox.com/s/txj21r7ia48feuf/SRTPluginUIRE8DirectXOverlay-v1.0.1.5.zip?dl=1">Download</a>
+						<a class="teal-text text-accent-3" href="https://github.com/VideoGameRoulette/SRTPluginUIRE8DirectXOverlay">Source Code</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col s12 m12">
+				<div class="card blue-grey darken-4">
+					<div class="card-content white-text">
+						<span class="card-title orange-text">RE8FOV Tool</span>
+						<p>A mod tool for Resident Evil 8 (2021) provides the ability to edit in-game Field of View.</p>
+					</div>
+					<div class="card-action">
+						<a class="teal-text text-accent-3" href="https://www.neonblu.com/Tools/RE8/RE8FOV_v1010-Release.7z">Download</a>
+						<a class="teal-text text-accent-3" href="https://github.com/Squirrelies/RE8FOV">Source Code</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	<footer class="page-footer blue-grey darken-4">
+		<div class="container">
+			<div class="row">
+				<div class="col l6 s12">
+					<h5 class="orange-text">Resident Evil Village SRT</h5>
+					<p class="grey-text text-lighten-4">For all your speedrun tool needs.</p>
+				</div>
+				<div class="col l4 offset-l2 s12">
+					<h5 class="orange-text">Links</h5>
+					<ul>
+						<li><a class="teal-text text-accent-3" href="https://www.twitch.tv/VideoGameRoulette">Twitch</a></li>
+						<li><a class="teal-text text-accent-3" href="https://twitter.com/VGRoulette">Twitter</a></li>
+						<li><a class="teal-text text-accent-3" href="https://discord.gg/QEvpZ5yHeM">Discord</a></li>
+						<li><a class="teal-text text-accent-3" href="https://github.com/VideoGameRoulette">Github</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="footer-copyright">
+			<div class="container">
+				© 2021 VideoGameRoulette
+			</div>
+		</div>
+	</footer>
 </body>
 
 </html>
