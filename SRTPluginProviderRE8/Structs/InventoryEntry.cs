@@ -17,7 +17,7 @@ namespace SRTPluginProviderRE8.Structs
         {
             get
             {
-                if (IsItem && IsAmmoClip) 
+                if (IsItem && IsAmmoClip)
                     return string.Format("Weapon Clip {0} Quantity {1}", (ItemEnumeration)ItemID, StackSize);
                 else if (IsItem && !IsAmmoClip)
                     return string.Format("[#{0}] Item {1} Quantity {2}", SlotNo, (ItemEnumeration)ItemID, StackSize);
@@ -38,8 +38,8 @@ namespace SRTPluginProviderRE8.Structs
             }
         }
 
-        public string ItemName 
-        { 
+        public string ItemName
+        {
             get
             {
                 if (IsItem)
@@ -56,6 +56,38 @@ namespace SRTPluginProviderRE8.Structs
                     return string.Format("{0}", (MapEnumeration)ItemID);
                 else
                     return "None";
+            }
+        }
+
+        public int? SizeX
+        {
+            get
+            {
+                if (IsHorizontal == 1 && IsItem || IsHorizontal == 1 && IsWeapon)
+                {
+                    return GameMemoryRE8Scanner.ItemSlots[ItemName].Item1;
+                }
+                if (IsHorizontal == 0 && IsItem || IsHorizontal == 0 && IsWeapon)
+                {
+                    return GameMemoryRE8Scanner.ItemSlots[ItemName].Item2;
+                }
+                return null;
+            }
+        }
+
+        public int? SizeY
+        {
+            get
+            {
+                if (IsHorizontal == 1 && IsItem || IsHorizontal == 1 && IsWeapon)
+                {
+                    return GameMemoryRE8Scanner.ItemSlots[ItemName].Item2;
+                }
+                if (IsHorizontal == 0 && IsItem || IsHorizontal == 0 && IsWeapon)
+                {
+                    return GameMemoryRE8Scanner.ItemSlots[ItemName].Item1;
+                }
+                return null;
             }
         }
 
@@ -83,7 +115,7 @@ namespace SRTPluginProviderRE8.Structs
         public bool IsTreasure => Enum.IsDefined(typeof(TreasureEnumeration), _itemid);
         public bool IsCraftable => Enum.IsDefined(typeof(CraftableEnumeration), _itemid);
         public bool IsMap => Enum.IsDefined(typeof(MapEnumeration), _itemid);
-        public bool IsAmmoClip => _slotNo > 256;
+        public bool IsAmmoClip => _slotNo == -1;
         public bool IsItemSlot => IsItem && !IsAmmoClip || IsWeapon;
         public int StackSize { get => _stackSize; set => _stackSize = value; }
         internal int _stackSize;

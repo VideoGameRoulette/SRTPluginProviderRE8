@@ -18,11 +18,12 @@ namespace SRTPluginProviderRE8.Structs
             get
             {
                 return string.Format(
-                    "Damage {0} - Rate of Fire {1} - Reload Speed {2} - Max Stack Size {3}",
+                    "Damage {0} - Rate of Fire {1} - Reload Speed {2} - Stack Size {3} - Extended Stack Size {4}",
                     Power,
                     Rate,
                     Reload,
-                    StackSize
+                    StackSize,
+                    ExtendedStackSize
                 );
             }
         }
@@ -37,6 +38,8 @@ namespace SRTPluginProviderRE8.Structs
         internal float _reload;
         public int StackSize { get => _stackSize; set => _stackSize = value; }
         internal int _stackSize;
-        
+        public int ExtendedStackSize { get => _extendedStackSize; set => _extendedStackSize = value; }
+        internal int _extendedStackSize;
+
     }
 }

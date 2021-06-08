@@ -2,6 +2,7 @@
 {
     public enum TreasureEnumeration : uint
     {
+        CrimsonGlass = 0x39377F,
         CrystalSkull = 0xC9B0FFBA,
         CrystalFragment = 0x73DACEBA,
         CrystalTorso = 0x7BE6E19A,

@@ -10,6 +10,7 @@ namespace SRTPluginProviderRE8.Structs.GameStructs
         [FieldOffset(0x18)] public float Rate;
         [FieldOffset(0x20)] public float Reload;
         [FieldOffset(0x28)] public int StackSize;
+        [FieldOffset(0x2C)] public int ExtendedStackSize;
 
         public static GameItemCustomParams AsStruct(byte[] data)
         {

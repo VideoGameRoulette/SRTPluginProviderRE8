@@ -8,6 +8,7 @@ using System.Text;
 using SRTPluginProviderRE8.Structs.GameStructs;
 using System.Linq;
 using System.Reflection;
+using System.Collections.Generic;
 
 namespace SRTPluginProviderRE8
 {
@@ -58,6 +59,91 @@ namespace SRTPluginProviderRE8
         private MultilevelPointer PointerInventoryEntryList { get; set; }
         private MultilevelPointer[] PointerInventoryEntries { get; set; }
         private MultilevelPointer[] PointerInventoryEntriesCustom { get; set; }
+
+        public static Tuple<int, int> Slot6x2 = new Tuple<int,int>(6, 2);
+        public static Tuple<int, int> Slot5x2 = new Tuple<int, int>(5, 2);
+        public static Tuple<int, int> Slot4x2 = new Tuple<int, int>(4, 2);
+        public static Tuple<int, int> Slot3x2 = new Tuple<int, int>(3, 2);
+        public static Tuple<int, int> Slot2x6 = new Tuple<int, int>(2, 6);
+        public static Tuple<int, int> Slot2x5 = new Tuple<int, int>(2, 5);
+        public static Tuple<int, int> Slot2x4 = new Tuple<int, int>(2, 4);
+        public static Tuple<int, int> Slot2x3 = new Tuple<int, int>(2, 3);
+        public static Tuple<int, int> Slot2x2 = new Tuple<int, int>(2, 2);
+        public static Tuple<int, int> Slot2x1 = new Tuple<int, int>(2, 1);
+        public static Tuple<int, int> Slot1x2 = new Tuple<int, int>(1, 2);
+        public static Tuple<int, int> Slot1x1 = new Tuple<int, int>(1, 1);
+
+        public static Dictionary<string, Tuple<int, int>> ItemSlots = new Dictionary<string, Tuple<int, int>>()
+        {
+            { "Dragoon", Slot5x2 },
+            { "DragoonChris", Slot5x2 },
+            { "F2Rifle", Slot6x2 },
+            { "F2RifleCheekRest", Slot1x1 },
+            { "F2RifleHighCapacityMag", Slot2x1 },
+            { "F2RifleHighMagnificationScope", Slot2x1 },
+            { "FirstAidMed", Slot2x1 },
+            { "GM79", Slot4x2 },
+            { "HandcannonPZ", Slot4x2 },
+            { "KarambitKnife", Slot2x1 },
+            { "KarambitKnifeChris", Slot2x1 },
+            { "Knife", Slot2x1 },
+            { "LEMI", Slot3x2 },
+            { "LEMIHighCapacityMag", Slot2x1 },
+            { "LEMIRecoilCompensator", Slot1x1 },
+            { "Lockpick", Slot1x1 },
+            { "M1851Wolfsbane", Slot4x2 },
+            { "M1851WolfsbaneIncreasedCapacityCylinder", Slot1x1 },
+            { "M1851WolfsbaneLongBarrelMod", Slot2x1 },
+            { "M1897", Slot5x2 },
+            { "M1897HairTrigger", Slot1x1 },
+            { "M1897MrRaccoon", Slot1x1 },
+            { "M1897MrEverything", Slot1x1 },
+            { "M1911", Slot3x2 },
+            { "M1911HighCapacityMag", Slot2x1 },
+            { "M1911ImprovedGrip", Slot2x1 },
+            { "MedInjector", Slot2x1 },
+            { "Mine", Slot2x1 },
+            { "PipeBomb", Slot2x1 },
+            { "RocketPistol", Slot4x2 },
+            { "STAKE", Slot4x2 },
+            { "STAKEHighCapacityMag", Slot2x1 },
+            { "STAKEImprovedGrip", Slot2x1 },
+            { "SYG12", Slot5x2 },
+            { "SYG12LongBarrel", Slot2x1 },
+            { "SYG12DrumMagazine", Slot2x2 },
+            { "SYG12RedDotSight", Slot2x1 },
+            { "TargetLocatorChris", Slot3x2 },
+            { "USMAI", Slot3x2 },
+            { "USMAIChris", Slot3x2 },
+            { "V61Custom", Slot3x2 },
+            { "V61CustomDrumMagazine", Slot2x1 },
+            { "V61CustomGunstock", Slot2x1 },
+            { "V61CustomLongBarrel", Slot2x1 },
+            { "W870TAC", Slot5x2 },
+            { "W870TACForegrip", Slot2x1 },
+            { "W870TACImprovedGunstock", Slot2x1 },
+            { "WCX", Slot5x2 },
+            { "WCXForegrip", Slot2x1 },
+            { "WCXRedDotSight", Slot2x1 },
+            { "HandgunAmmo", Slot2x1 },
+            { "ShotgunAmmo", Slot2x1 },
+            { "SniperRifleAmmo", Slot2x1 },
+            { "MagnumAmmo", Slot2x1 },
+            { "RifleAmmo", Slot2x1 },
+            { "RocketAmmo", Slot2x1 },
+            { "Flashbang", Slot2x1 },
+            { "ExplosiveRounds", Slot2x1 },
+            { "GrenadeChris", Slot2x1 },
+            { "FlashGrenadeChris", Slot2x1 },
+            { "Fish", Slot2x1 },
+            { "Meat", Slot2x1 },
+            { "Poultry", Slot2x1 },
+            { "JuicyGame", Slot2x1 },
+            { "QualityMeat", Slot2x2 },
+            { "FinestFish", Slot2x1 },
+            { "AntiqueCoin", Slot1x1 },
+        };
+
         internal GameMemoryRE8Scanner(Process process = null)
         {
             gameMemoryValues = new GameMemoryRE8();
@@ -475,7 +561,7 @@ namespace SRTPluginProviderRE8
                         gameMemoryValues.PlayerInventory[i]._isTemporary = 255;
                         gameMemoryValues.PlayerInventory[i]._sortOrder = 255;
                         gameMemoryValues.PlayerInventory[i]._isUsing = 255;
-                        gameMemoryValues.PlayerInventory[i]._itemid = 0xFFFFFFFF;
+                        gameMemoryValues.PlayerInventory[i]._itemid = inventoryItem.ItemId;
                         gameMemoryValues.PlayerInventory[i]._itemCategoryHash = 0xFFFFFFFF;
                         gameMemoryValues.PlayerInventory[i]._slotNo = -1;
                         gameMemoryValues.PlayerInventory[i]._quickSlotHash = 0xFFFFFFFF;
@@ -490,6 +576,7 @@ namespace SRTPluginProviderRE8
                         gameMemoryValues.PlayerInventory[i]._customParameter._rate = 0;
                         gameMemoryValues.PlayerInventory[i]._customParameter._reload = 0;
                         gameMemoryValues.PlayerInventory[i]._customParameter._stackSize = -1;
+                        gameMemoryValues.PlayerInventory[i]._customParameter._extendedStackSize = -1;
 
                         if (gameMemoryValues.PlayerInventory[i].IsItem || gameMemoryValues.PlayerInventory[i].IsWeapon)
                         {
@@ -512,6 +599,7 @@ namespace SRTPluginProviderRE8
                                 gameMemoryValues.PlayerInventory[i]._customParameter._rate = customParams.Rate;
                                 gameMemoryValues.PlayerInventory[i]._customParameter._reload = customParams.Reload;
                                 gameMemoryValues.PlayerInventory[i]._customParameter._stackSize = customParams.StackSize;
+                                gameMemoryValues.PlayerInventory[i]._customParameter._extendedStackSize = customParams.ExtendedStackSize;
                             }
                         }
                         else if (gameMemoryValues.PlayerInventory[i].IsKeyItem || gameMemoryValues.PlayerInventory[i].IsCraftable || gameMemoryValues.PlayerInventory[i].IsTreasure)
@@ -556,6 +644,7 @@ namespace SRTPluginProviderRE8
             gameMemoryValues.PlayerInventory[i]._customParameter._rate = 0;
             gameMemoryValues.PlayerInventory[i]._customParameter._reload = 0;
             gameMemoryValues.PlayerInventory[i]._customParameter._stackSize = -1;
+            gameMemoryValues.PlayerInventory[i]._customParameter._extendedStackSize = -1;
         }
 
         private string GetString(byte[] value)
