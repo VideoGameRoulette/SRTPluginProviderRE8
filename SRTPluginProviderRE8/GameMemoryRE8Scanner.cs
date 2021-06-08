@@ -82,7 +82,7 @@ namespace SRTPluginProviderRE8
             { "F2RifleHighCapacityMag", Slot2x1 },
             { "F2RifleHighMagnificationScope", Slot2x1 },
             { "FirstAidMed", Slot2x1 },
-            { "GM79", Slot4x2 },
+            { "GM79", Slot5x2 },
             { "HandcannonPZ", Slot4x2 },
             { "KarambitKnife", Slot2x1 },
             { "KarambitKnifeChris", Slot2x1 },
@@ -91,6 +91,7 @@ namespace SRTPluginProviderRE8
             { "LEMIHighCapacityMag", Slot2x1 },
             { "LEMIRecoilCompensator", Slot1x1 },
             { "Lockpick", Slot1x1 },
+            { "LZAnswerer", Slot1x1 },
             { "M1851Wolfsbane", Slot4x2 },
             { "M1851WolfsbaneIncreasedCapacityCylinder", Slot1x1 },
             { "M1851WolfsbaneLongBarrelMod", Slot2x1 },
@@ -108,20 +109,20 @@ namespace SRTPluginProviderRE8
             { "STAKE", Slot4x2 },
             { "STAKEHighCapacityMag", Slot2x1 },
             { "STAKEImprovedGrip", Slot2x1 },
-            { "SYG12", Slot5x2 },
+            { "SYG12", Slot6x2 },
             { "SYG12LongBarrel", Slot2x1 },
             { "SYG12DrumMagazine", Slot2x2 },
             { "SYG12RedDotSight", Slot2x1 },
-            { "TargetLocatorChris", Slot3x2 },
+            { "TargetLocatorChris", Slot2x2 },
             { "USMAI", Slot3x2 },
             { "USMAIChris", Slot3x2 },
             { "V61Custom", Slot3x2 },
-            { "V61CustomDrumMagazine", Slot2x1 },
-            { "V61CustomGunstock", Slot2x1 },
+            { "V61CustomDrumMagazine", Slot2x2 },
+            { "V61CustomGunstock", Slot2x2 },
             { "V61CustomLongBarrel", Slot2x1 },
             { "W870TAC", Slot5x2 },
             { "W870TACForegrip", Slot2x1 },
-            { "W870TACImprovedGunstock", Slot2x1 },
+            { "W870TACImprovedGunstock", Slot2x2 },
             { "WCX", Slot5x2 },
             { "WCXForegrip", Slot2x1 },
             { "WCXRedDotSight", Slot2x1 },
@@ -136,7 +137,7 @@ namespace SRTPluginProviderRE8
             { "GrenadeChris", Slot2x1 },
             { "FlashGrenadeChris", Slot2x1 },
             { "Fish", Slot2x1 },
-            { "Meat", Slot2x1 },
+            { "Meat", Slot2x2 },
             { "Poultry", Slot2x1 },
             { "JuicyGame", Slot2x1 },
             { "QualityMeat", Slot2x2 },
@@ -406,6 +407,7 @@ namespace SRTPluginProviderRE8
             PointerInventoryCount.UpdatePointers();
             PointerInventoryEntryList.UpdatePointers();
             GenerateItemEntries();
+
         }
 
         private void GetCurrentEvent(int? length)
