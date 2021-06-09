@@ -28,14 +28,10 @@ namespace SRTPluginProviderRE8
 
         // Pointer Address Variables
         private int pointerEventActionTask;
-
         private int pointerPropsManager;
-
         private int pointerRankManager;
         private int pointerInventory;
-
         private int pointerAddressEnemies;
-        private int pointerAddressItems;
 
         // Pointer Classes
         private IntPtr BaseAddress { get; set; }
@@ -47,15 +43,13 @@ namespace SRTPluginProviderRE8
         private MultilevelPointer PointerPlayerHP { get; set; }
         private MultilevelPointer PointerPlayerPosition { get; set; }
         private MultilevelPointer PointerRankManager { get; set; }
-        private MultilevelPointer PointerInventory { get; set; }
 
         // Enemy Pointers
-        private MultilevelPointer PointerEnemyCount { get; set; }
         private MultilevelPointer PointerEnemyEntryList { get; set; }
         private MultilevelPointer[] PointerEnemyEntries { get; set; }
 
         // Inventory Pointers
-        private MultilevelPointer PointerInventoryCount { get; set; }
+        private MultilevelPointer PointerActiveInventory { get; set; }
         private MultilevelPointer PointerInventoryEntryList { get; set; }
         private MultilevelPointer[] PointerInventoryEntries { get; set; }
         private MultilevelPointer[] PointerInventoryEntriesCustom { get; set; }
@@ -239,7 +233,13 @@ namespace SRTPluginProviderRE8
                     IntPtr.Add(BaseAddress, pointerRankManager)
                 );
 
-                PointerInventory = new MultilevelPointer(
+                PointerActiveInventory = new MultilevelPointer(
+                    memoryAccess,
+                    IntPtr.Add(BaseAddress, pointerInventory),
+                    0x60L
+                );
+
+                PointerInventoryEntryList = new MultilevelPointer(
                     memoryAccess, 
                     IntPtr.Add(BaseAddress, pointerInventory), 
                     0x60L,
@@ -255,30 +255,7 @@ namespace SRTPluginProviderRE8
                     0x10L
                 );
 
-                PointerEnemyCount = new MultilevelPointer(
-                    memoryAccess, 
-                    IntPtr.Add(BaseAddress, pointerAddressEnemies), 
-                    0x58L,
-                    0x10L
-                );
-
                 GenerateEnemyEntries();
-
-                //Items
-                PointerInventoryCount = new MultilevelPointer(
-                    memoryAccess, 
-                    IntPtr.Add(BaseAddress, pointerInventory), 
-                    0x60L,
-                    0x18L,
-                    0x10L
-                );
-
-                PointerInventoryEntryList = new MultilevelPointer(
-                    memoryAccess, 
-                    IntPtr.Add(BaseAddress, pointerAddressItems), 
-                    0x78L,
-                    0x70L
-                );
 
                 GenerateItemEntries();
             }
@@ -291,7 +268,6 @@ namespace SRTPluginProviderRE8
                 case GameVersion.RE8_PROMO_01_20210426_1:
                     {
                         pointerRankManager = 0x0A1A50C0 + 0x1030;
-                        pointerAddressItems = 0x0A1A5880 + 0x1030;
                         pointerInventory = 0x0A1B29F0 + 0x1030;
                         pointerAddressEnemies = 0x0A1B1D00 + 0x1030;
                         pointerPropsManager = 0x0A18D990 + 0x1030;
@@ -301,7 +277,6 @@ namespace SRTPluginProviderRE8
                 case GameVersion.RE8_WW_20210506_1:
                     {
                         pointerRankManager = 0x0A1A50C0;
-                        pointerAddressItems = 0x0A1A5880;
                         pointerInventory = 0x0A1B29F0;
                         pointerAddressEnemies = 0x0A1B1D00;
                         pointerPropsManager = 0x0A18D990;
@@ -311,7 +286,6 @@ namespace SRTPluginProviderRE8
                 case GameVersion.RE8_CEROD_20210506_1:
                     {
                         pointerRankManager = 0x0A1A50C0 + 0x2000;
-                        pointerAddressItems = 0x0A1A5880 + 0x2000;
                         pointerInventory = 0x0A1B29F0 + 0x2000;
                         pointerAddressEnemies = 0x0A1B1D00 + 0x2000;
                         pointerPropsManager = 0x0A18D990 + 0x2000;
@@ -321,7 +295,6 @@ namespace SRTPluginProviderRE8
                 case GameVersion.RE8_CEROZ_20210508_1:
                     {
                         pointerRankManager = 0x0A1A50C0 + 0x1000;
-                        pointerAddressItems = 0x0A1A5880 + 0x1000;
                         pointerInventory = 0x0A1B1C70 + 0x1000;
                         pointerAddressEnemies = 0x0A1B1D00 + 0x1000;
                         pointerPropsManager = 0x0A18D990 + 0x1000;
@@ -341,7 +314,7 @@ namespace SRTPluginProviderRE8
         {
             bool success;
             fixed (int* p = &EnemyTableCount)
-                success = PointerEnemyCount.TryDerefInt(0x1C, p);
+                success = PointerEnemyEntryList.TryDerefInt(0x1C, p);
 
             PointerEnemyEntries = new MultilevelPointer[MAX_ENTITIES]; // Create a new enemy pointer table array with the detected size.
 
@@ -363,7 +336,7 @@ namespace SRTPluginProviderRE8
         {
             bool success;
             fixed (int* p = &InventoryTableCount)
-                success = PointerInventoryCount.TryDerefInt(0x1C, p);
+                success = PointerInventoryEntryList.TryDerefInt(0x1C, p);
 
             PointerInventoryEntries = new MultilevelPointer[MAX_ITEMS];
             PointerInventoryEntriesCustom = new MultilevelPointer[MAX_ITEMS];
@@ -397,17 +370,12 @@ namespace SRTPluginProviderRE8
             PointerPlayerPosition.UpdatePointers();
 
             PointerRankManager.UpdatePointers();
-            PointerInventory.UpdatePointers();
-            
-            PointerEnemyCount.UpdatePointers();
-            PointerEnemyEntryList.UpdatePointers();
 
+            PointerEnemyEntryList.UpdatePointers();
             GenerateEnemyEntries();
 
-            PointerInventoryCount.UpdatePointers();
             PointerInventoryEntryList.UpdatePointers();
             GenerateItemEntries();
-
         }
 
         private void GetCurrentEvent(int? length)
@@ -486,7 +454,7 @@ namespace SRTPluginProviderRE8
 
             // Lei
             fixed (int* p = &gameMemoryValues._lei)
-                success = PointerInventory.TryDerefInt(0x48, p);
+                success = PointerActiveInventory.TryDerefInt(0x48, p);
 
             // EventType
             fixed (int* p = &gameMemoryValues._eventType)
@@ -495,11 +463,7 @@ namespace SRTPluginProviderRE8
 
             // IsMotionPlay
             fixed (byte* p = &gameMemoryValues._isMotionPlay)
-                success = PointerIsMotionPlay.TryDerefByte(0x1D0, p);
-
-            // Lei
-            fixed (int* p = &gameMemoryValues._lei)
-                success = PointerInventory.TryDerefInt(0x48, p);
+                success = PointerIsMotionPlay.TryDerefByte(0x1D0, p);           
 
             // Enemy HP
             if (gameMemoryValues._enemyHealth == null)
