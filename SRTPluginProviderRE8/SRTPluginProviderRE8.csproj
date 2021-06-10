@@ -15,7 +15,8 @@
     <FileVersion>1.0.1.6</FileVersion>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <!-- netcoreapp3.1 had to be hardcoded here because this project reports $(TargetFramework) as netstandard2.0 (rightfully so) and I am not sure how this project's csproj can auto-detect another project's framework version to copy it to the appropriate folder so we're just... hardcoding this. -->
-    <CopyDestionationPath>$(SolutionDir)..\SRTHost\SRTHost\bin\$(Configuration)\net5.0-windows\win-x64\plugins</CopyDestionationPath>
+    <!--<CopyDestionationPath>$(SolutionDir)..\SRTHost\SRTHost\bin\$(Configuration)\net5.0-windows\win-x64\plugins</CopyDestionationPath>-->
+    <CopyDestionationPath>$(SolutionDir)..\SRTHost\SRTHost\bin\$(Configuration)\netcoreapp3.1\plugins</CopyDestionationPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
