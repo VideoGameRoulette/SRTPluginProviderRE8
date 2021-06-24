@@ -13,14 +13,14 @@ namespace SRTPluginProviderRE8
 
         public Uri MoreInfoURL => new Uri("https://github.com/VideoGameRoulette/SRTPluginProviderRE8");
 
-        public int VersionMajor => assemblyFileVersion.ProductMajorPart;
+        public int VersionMajor => assemblyVersion.Major;
 
-        public int VersionMinor => assemblyFileVersion.ProductMinorPart;
+        public int VersionMinor => assemblyVersion.Minor;
 
-        public int VersionBuild => assemblyFileVersion.ProductBuildPart;
+        public int VersionBuild => assemblyVersion.Build;
 
-        public int VersionRevision => assemblyFileVersion.ProductPrivatePart;
+        public int VersionRevision => assemblyVersion.Revision;
 
-        private System.Diagnostics.FileVersionInfo assemblyFileVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
+        private Version assemblyVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
     }
 }

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <UseWindowsForms>false</UseWindowsForms>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Platforms>x64</Platforms>
     <Authors>VideoGameRoulette</Authors>
@@ -40,8 +40,8 @@
   </Target>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ProcessMemory\ProcessMemory\ProcessMemory.csproj" />
-    <ProjectReference Include="..\..\SRTHost\SRTPluginBase\SRTPluginBase.csproj">
+    <ProjectReference Include="..\..\..\Squirrelies\ProcessMemory\ProcessMemory\ProcessMemory.csproj" />
+    <ProjectReference Include="..\..\..\Squirrelies\SRTHost\SRTPluginBase\SRTPluginBase.csproj">
       <Private>false</Private>
       <ExcludeAssets>runtime</ExcludeAssets>
     </ProjectReference>

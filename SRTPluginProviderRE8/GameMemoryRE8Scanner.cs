@@ -1,13 +1,9 @@
 ﻿using ProcessMemory;
-using static ProcessMemory.Extensions;
 using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using SRTPluginProviderRE8.Structs;
 using System.Text;
 using SRTPluginProviderRE8.Structs.GameStructs;
-using System.Linq;
-using System.Reflection;
 using System.Collections.Generic;
 
 namespace SRTPluginProviderRE8
@@ -332,6 +328,7 @@ namespace SRTPluginProviderRE8
                 PointerEnemyEntries[i] = new MultilevelPointer(memoryAccess, IntPtr.Add(entityPtrArr[i], 0x228), 0x18L, 0x48L, 0x48L);
             }
         }
+
         private unsafe void GenerateItemEntries()
         {
             bool success;
